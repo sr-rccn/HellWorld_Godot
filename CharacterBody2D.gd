@@ -25,12 +25,14 @@ func _physics_process(delta):
 		has_double_jump = false
 		
 	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") :
+	if Input.is_action_just_pressed("ui_accept") and has_double_jump :
 		jumps = jumps + 1
 		velocity.y = JUMP_VELOCITY
-		if direction == 1 or last_movement == 1:
+		
+		
+		if direction == 1:
 			_animated_sprite.play("jump_right")
-		if direction == -1 or last_movement == -1:
+		if direction == -1:
 			_animated_sprite.play("jump_left")
 		# Double jump
 		if jumps < 1:
@@ -39,16 +41,29 @@ func _physics_process(delta):
 	
 	
 	#Controla animación al caer del salto
+	
+	#Mover y saltar a la derecha
 	if last_movement == 1 and direction == 0 and is_on_floor():
 		_animated_sprite.play("stand_right")
+	if direction == 1 and !is_on_floor():
+		_animated_sprite.play("jump_right")
 		
+	#Mover y saltar a la izquierda
 	if last_movement == -1 and direction == 0 and is_on_floor():
 		_animated_sprite.play("stand_left")
+	if direction == -1 and !is_on_floor():
+		_animated_sprite.play("jump_left")
+	
+	if direction == 0 and !is_on_floor():
+		if last_movement == -1:
+			_animated_sprite.play("jump_left")
+		if last_movement == 1:
+			_animated_sprite.play("jump_right")
+	
 
 
 	
 	if Input.is_action_pressed("ui_right") and is_on_floor():
-		print(_animated_sprite.animation)
 		_animated_sprite.play("run_right")
 	if Input.is_action_pressed("ui_left") and is_on_floor():
 		_animated_sprite.play("run_left")

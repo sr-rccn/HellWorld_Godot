@@ -186,7 +186,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_stcuy")
 }, {
-"duration": 1.0,
+"duration": 1000.0,
 "texture": SubResource("AtlasTexture_5yo6p")
 }],
 "loop": true,
@@ -218,7 +218,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_b264x")
 }, {
-"duration": 1.0,
+"duration": 1000.0,
 "texture": SubResource("AtlasTexture_xmrap")
 }],
 "loop": true,
@@ -1631,7 +1631,7 @@ zoom = Vector2(4, 4)
 position = Vector2(67, 558)
 scale = Vector2(0.725816, 0.725)
 sprite_frames = SubResource("SpriteFrames_31dbl")
-animation = &"jump_left"
+animation = &"jump_right"
 autoplay = "stand_right"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
