@@ -44,13 +44,23 @@ func _physics_process(delta):
 	
 	#Mover y saltar a la derecha
 	if last_movement == 1 and direction == 0 and is_on_floor():
-		_animated_sprite.play("stand_right")
+		if Input.is_action_just_pressed("ui_attack"):
+			_animated_sprite.play("attack_right")
+		else:
+			if _animated_sprite.animation != "attack_right":
+				_animated_sprite.play("stand_right")	
+				
 	if direction == 1 and !is_on_floor():
 		_animated_sprite.play("jump_right")
 		
 	#Mover y saltar a la izquierda
 	if last_movement == -1 and direction == 0 and is_on_floor():
-		_animated_sprite.play("stand_left")
+		if Input.is_action_just_pressed("ui_attack"):
+			_animated_sprite.play("attack_left")
+		else:
+			if _animated_sprite.animation != "attack_left":
+				_animated_sprite.play("stand_left")
+				
 	if direction == -1 and !is_on_floor():
 		_animated_sprite.play("jump_left")
 	
@@ -60,8 +70,6 @@ func _physics_process(delta):
 		if last_movement == 1:
 			_animated_sprite.play("jump_right")
 	
-
-
 	
 	if Input.is_action_pressed("ui_right") and is_on_floor():
 		_animated_sprite.play("run_right")
@@ -76,5 +84,6 @@ func _physics_process(delta):
 	if(direction != 0):
 		last_movement = direction
 		
-	print(last_movement)
+	print(_animated_sprite)
+
 	move_and_slide()
