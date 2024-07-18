@@ -1,6 +1,7 @@
 extends CharacterBody2D
 @onready var _animated_sprite = $AnimatedSprite2D
 
+
 const SPEED = 150.0
 const JUMP_VELOCITY = -200.0
 const FLOOR_NORMAL = Vector2.UP
@@ -47,6 +48,19 @@ func _physics_process(delta):
 	if last_movement == 1 and direction == 0 and is_on_floor():
 		if Input.is_action_just_pressed("ui_attack"):
 			_animated_sprite.play("attack_right")
+		
+			#move boxes
+			var overlapping = $AnimatedSprite2D/Area2D.get_overlapping_bodies()
+			for rigid_body in overlapping:
+				if rigid_body is RigidBody2D:
+					rigid_body.apply_central_impulse(Vector2(90, 0))
+					#rigid_body.queue_free()
+					print(rigid_body.mass)
+			#move boxes
+			
+			#for area in overlapping:
+				#var parent = area.get_parent()
+				#parent.queue_free()
 
 		else:
 			if _animated_sprite.animation != "attack_right":
@@ -60,6 +74,14 @@ func _physics_process(delta):
 	if last_movement == -1 and direction == 0 and is_on_floor():
 		if Input.is_action_just_pressed("ui_attack"):
 			_animated_sprite.play("attack_left")
+			
+			var overlapping = $AnimatedSprite2D/Area2D.get_overlapping_bodies()
+			print(overlapping)
+			
+			#for area in overlapping:
+				#var parent = area.get_parent()
+				#parent.queue_free()
+			#
 		else:
 			if _animated_sprite.animation != "attack_left":
 				_animated_sprite.play("stand_left")
@@ -100,12 +122,13 @@ func _physics_process(delta):
 		
 
 	for i in get_slide_collision_count():
-		print(get_slide_collision(i).get_collider().name)
 		var collision = get_slide_collision(i)
 		var collider = collision.get_collider()
 		if collider is RigidBody2D:
-			var impulse = -collision.get_normal() * 25
+			var impulse = -collision.get_normal()
+			print(impulse)
 			collider.apply_central_impulse(impulse)
-
+			
 	move_and_slide()
+
 

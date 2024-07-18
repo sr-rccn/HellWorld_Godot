@@ -1,13 +1,29 @@
-[gd_scene load_steps=75 format=3 uid="uid://cru7ynmjnlo28"]
+[gd_scene load_steps=74 format=3 uid="uid://cru7ynmjnlo28"]
 
+[ext_resource type="Script" path="res://RigidBody2D.gd" id="1_4s1t0"]
 [ext_resource type="Texture2D" uid="uid://c6hvbrnwcemkb" path="res://adventurer-Sheet_reverse.png" id="1_hop1u"]
 [ext_resource type="Script" path="res://CharacterBody2D.gd" id="1_sduxm"]
 [ext_resource type="Texture2D" uid="uid://vk6ddfcfgrqw" path="res://adventurer-Sheet.png" id="1_uigoo"]
 [ext_resource type="Texture2D" uid="uid://dwo522vl7udxn" path="res://image.png" id="2_vp715"]
 [ext_resource type="Texture2D" uid="uid://clnsf5nyj4lc1" path="res://oak_woods_tileset.png" id="3_s3tje"]
 [ext_resource type="Texture2D" uid="uid://c25tq86bakhn8" path="res://Background.png" id="4_278vq"]
-[ext_resource type="Script" path="res://AnimationPlayer.gd" id="6_ahxx3"]
 [ext_resource type="Texture2D" uid="uid://b4pf1c8gkdw5l" path="res://icon.svg" id="7_dbw77"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_e2v41"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2nlgc"]
+size = Vector2(16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_oqjlm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_dbw77")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 5.0
+}]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qdh6w"]
 texture = ExtResource("3_s3tje")
@@ -1799,14 +1815,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="SeparationRayShape2D" id="SeparationRayShape2D_yvb7i"]
-length = 20.1673
-
-[sub_resource type="Animation" id="Animation_yumja"]
-resource_name = "idle"
-loop_mode = 1
-
-[sub_resource type="Animation" id="Animation_ak7xr"]
+[sub_resource type="Animation" id="Animation_qrijk"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -1832,58 +1841,10 @@ tracks/1/keys = {
 "update": 1,
 "values": [0]
 }
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AnimatedSprite2D/WeaponArea2D/CollisionShape2D:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-22.0442, 11.0345)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("AnimatedSprite2D/WeaponArea2D/CollisionShape2D:rotation")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [-0.92677]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("AnimatedSprite2D/WeaponArea2D/CollisionShape2D:scale")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0.81, 0.81)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("AnimatedSprite2D/WeaponArea2D/CollisionShape2D:skew")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.162316]
-}
 
-[sub_resource type="Animation" id="Animation_3jhff"]
+[sub_resource type="Animation" id="Animation_g48ju"]
 resource_name = "attack_right"
-loop_mode = 1
+loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -1891,7 +1852,7 @@ tracks/0/path = NodePath("AnimatedSprite2D:animation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
+"times": PackedFloat32Array(-0.1),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [&"attack_right"]
@@ -1903,89 +1864,48 @@ tracks/1/path = NodePath("AnimatedSprite2D:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.5, 0.7, 0.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.3, 0.5, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [0, 2, 3, 4, 5]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AnimatedSprite2D/WeaponArea2D/CollisionShape2D:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.5, 0.7, 0.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(-32.216, -2.68), Vector2(-49.388, 7.714), Vector2(-32.576, 11.034), Vector2(-36.976, 6.83), Vector2(-36.003, 0.49)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("AnimatedSprite2D/WeaponArea2D/CollisionShape2D:rotation")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.5, 0.7, 0.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 0,
-"values": [-0.92677, -1.83609, -4.37205, -4.37903, 1.43292]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("AnimatedSprite2D/WeaponArea2D/CollisionShape2D:scale")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.5, 0.7, 0.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(0.81, 0.81), Vector2(2.43, 2.43), Vector2(1.2, 1.2), Vector2(1.134, 1.134), Vector2(0.918, 0.918)]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("AnimatedSprite2D/WeaponArea2D/CollisionShape2D:skew")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.5, 0.7, 0.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 0,
-"values": [0.162316, 0.162316, -0.0767945, 0.0188496, 0.114494]
+"values": [0, 0, 2, 3, 4, 5]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_6q3ia"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_m0yfe"]
 _data = {
-"RESET": SubResource("Animation_ak7xr"),
-"attack_right": SubResource("Animation_3jhff"),
-"idle": SubResource("Animation_yumja")
+"RESET": SubResource("Animation_qrijk"),
+"attack_right": SubResource("Animation_g48ju")
 }
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h70in"]
+size = Vector2(32.0441, 7.24138)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_f1q6h"]
 radius = 3.0
 height = 20.0
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_e2v41"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2nlgc"]
-size = Vector2(16, 16)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_oqjlm"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("7_dbw77")
-}],
-"loop": true,
-"name": &"new_animation",
-"speed": 5.0
-}]
-
 [node name="Game" type="Node2D"]
 position = Vector2(-32, -56)
+
+[node name="Head" type="RigidBody2D" parent="."]
+position = Vector2(-104, 16)
+collision_layer = 4
+collision_mask = 15
+mass = 0.1
+physics_material_override = SubResource("PhysicsMaterial_e2v41")
+script = ExtResource("1_4s1t0")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Head"]
+position = Vector2(-288, -32)
+shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Head"]
+position = Vector2(-288, -32)
+scale = Vector2(0.125, 0.125)
+sprite_frames = SubResource("SpriteFrames_oqjlm")
+animation = &"new_animation"
+metadata/_edit_group_ = true
 
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2(-40, 32)
@@ -1998,9 +1918,9 @@ z_index = 2
 position = Vector2(-512, -504)
 disable_mode = 2
 collision_layer = 2
-collision_mask = 7
+collision_mask = 13
 slide_on_ceiling = false
-floor_snap_length = 0.2
+floor_snap_length = 1.5
 script = ExtResource("1_sduxm")
 
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
@@ -2014,367 +1934,491 @@ sprite_frames = SubResource("SpriteFrames_31dbl")
 animation = &"attack_right"
 autoplay = "stand_right"
 
-[node name="WeaponArea2D" type="Area2D" parent="CharacterBody2D/AnimatedSprite2D"]
-position = Vector2(28.933, 2.75862)
-collision_layer = 8
-collision_mask = 4
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D/AnimatedSprite2D/WeaponArea2D"]
-position = Vector2(-22.0442, 11.0345)
-rotation = -0.92677
-scale = Vector2(0.81, 0.81)
-skew = 0.162316
-shape = SubResource("SeparationRayShape2D_yvb7i")
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody2D/AnimatedSprite2D"]
 root_node = NodePath("../..")
 libraries = {
-"": SubResource("AnimationLibrary_6q3ia")
+"": SubResource("AnimationLibrary_m0yfe")
 }
-script = ExtResource("6_ahxx3")
+
+[node name="Area2D" type="Area2D" parent="CharacterBody2D/AnimatedSprite2D" groups=["Hit"]]
+collision_layer = 8
+collision_mask = 15
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D/AnimatedSprite2D/Area2D" groups=["Hit"]]
+position = Vector2(6.8888, 2.75862)
+shape = SubResource("RectangleShape2D_h70in")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
-visible = false
 position = Vector2(67, 558)
 shape = SubResource("CapsuleShape2D_f1q6h")
 
-[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
-texture = ExtResource("1_uigoo")
-offset = Vector2(2.08165e-12, -12)
-hframes = 6
-vframes = 10
-frame = 59
-
 [node name="Background" type="Sprite2D" parent="."]
-visible = false
 z_index = -5
-position = Vector2(376, -152)
-scale = Vector2(2.33621, 1.09521)
+position = Vector2(-54.0007, -152)
+scale = Vector2(1.40948, 1.09521)
 texture = ExtResource("4_278vq")
 
-[node name="CanvasGroup" type="CanvasGroup" parent="."]
-
-[node name="RigidBody2D" type="RigidBody2D" parent="CanvasGroup"]
-position = Vector2(-120, 16)
-collision_layer = 4
-collision_mask = 7
-physics_material_override = SubResource("PhysicsMaterial_e2v41")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup/RigidBody2D"]
-position = Vector2(-32, 16)
-shape = SubResource("RectangleShape2D_2nlgc")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup/RigidBody2D"]
-position = Vector2(-32, 16)
-scale = Vector2(0.125, 0.125)
-sprite_frames = SubResource("SpriteFrames_oqjlm")
-animation = &"new_animation"
-
-[node name="RigidBody2D2" type="RigidBody2D" parent="CanvasGroup"]
-position = Vector2(-128, 40)
-physics_material_override = SubResource("PhysicsMaterial_e2v41")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup/RigidBody2D2"]
-position = Vector2(-24, 8)
-shape = SubResource("RectangleShape2D_2nlgc")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup/RigidBody2D2"]
-position = Vector2(-24, 8)
-scale = Vector2(0.125, 0.125)
-sprite_frames = SubResource("SpriteFrames_oqjlm")
-animation = &"new_animation"
-
-[node name="RigidBody2D4" type="RigidBody2D" parent="CanvasGroup"]
-position = Vector2(160, 104)
-physics_material_override = SubResource("PhysicsMaterial_e2v41")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup/RigidBody2D4"]
-position = Vector2(-296, -56)
-shape = SubResource("RectangleShape2D_2nlgc")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup/RigidBody2D4"]
-position = Vector2(-296, -56)
-scale = Vector2(0.125, 0.125)
-sprite_frames = SubResource("SpriteFrames_oqjlm")
-animation = &"new_animation"
-
 [node name="CanvasGroup2" type="CanvasGroup" parent="."]
+metadata/_edit_group_ = true
 
-[node name="RigidBody2D" type="RigidBody2D" parent="CanvasGroup2"]
-position = Vector2(-256, -16)
+[node name="Head" type="RigidBody2D" parent="CanvasGroup2"]
+position = Vector2(0, 104)
 collision_layer = 4
 collision_mask = 15
+mass = 0.1
 physics_material_override = SubResource("PhysicsMaterial_e2v41")
+script = ExtResource("1_4s1t0")
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup2/RigidBody2D"]
-position = Vector2(-32, 16)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup2/Head"]
+position = Vector2(-288, -32)
 shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup2/RigidBody2D"]
-position = Vector2(-32, 16)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup2/Head"]
+position = Vector2(-288, -32)
 scale = Vector2(0.125, 0.125)
 sprite_frames = SubResource("SpriteFrames_oqjlm")
 animation = &"new_animation"
+metadata/_edit_group_ = true
 
-[node name="RigidBody2D2" type="RigidBody2D" parent="CanvasGroup2"]
-position = Vector2(-264, 8)
+[node name="Head2" type="RigidBody2D" parent="CanvasGroup2"]
+position = Vector2(16, 104)
+collision_layer = 4
 collision_mask = 15
+mass = 0.1
 physics_material_override = SubResource("PhysicsMaterial_e2v41")
+script = ExtResource("1_4s1t0")
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup2/RigidBody2D2"]
-position = Vector2(-24, 8)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup2/Head2"]
+position = Vector2(-288, -32)
 shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup2/RigidBody2D2"]
-position = Vector2(-24, 8)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup2/Head2"]
+position = Vector2(-288, -32)
 scale = Vector2(0.125, 0.125)
 sprite_frames = SubResource("SpriteFrames_oqjlm")
 animation = &"new_animation"
+metadata/_edit_group_ = true
 
-[node name="RigidBody2D4" type="RigidBody2D" parent="CanvasGroup2"]
-position = Vector2(24, 72)
+[node name="Head3" type="RigidBody2D" parent="CanvasGroup2"]
+position = Vector2(-16, 104)
+collision_layer = 4
 collision_mask = 15
+mass = 0.1
 physics_material_override = SubResource("PhysicsMaterial_e2v41")
+script = ExtResource("1_4s1t0")
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup2/RigidBody2D4"]
-position = Vector2(-296, -56)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup2/Head3"]
+position = Vector2(-288, -32)
 shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup2/RigidBody2D4"]
-position = Vector2(-296, -56)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup2/Head3"]
+position = Vector2(-288, -32)
 scale = Vector2(0.125, 0.125)
 sprite_frames = SubResource("SpriteFrames_oqjlm")
 animation = &"new_animation"
+metadata/_edit_group_ = true
+
+[node name="Head4" type="RigidBody2D" parent="CanvasGroup2"]
+position = Vector2(0, 88)
+collision_layer = 4
+collision_mask = 15
+mass = 0.1
+physics_material_override = SubResource("PhysicsMaterial_e2v41")
+script = ExtResource("1_4s1t0")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup2/Head4"]
+position = Vector2(-288, -32)
+shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup2/Head4"]
+position = Vector2(-288, -32)
+scale = Vector2(0.125, 0.125)
+sprite_frames = SubResource("SpriteFrames_oqjlm")
+animation = &"new_animation"
+metadata/_edit_group_ = true
 
 [node name="CanvasGroup3" type="CanvasGroup" parent="."]
-position = Vector2(264, 64)
+position = Vector2(144, 16)
+metadata/_edit_group_ = true
 
-[node name="RigidBody2D" type="RigidBody2D" parent="CanvasGroup3"]
-position = Vector2(-256, -16)
+[node name="Head" type="RigidBody2D" parent="CanvasGroup3"]
+position = Vector2(0, 104)
 collision_layer = 4
-collision_mask = 7
+collision_mask = 15
+mass = 0.1
 physics_material_override = SubResource("PhysicsMaterial_e2v41")
+gravity_scale = 3.0
+script = ExtResource("1_4s1t0")
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup3/RigidBody2D"]
-position = Vector2(-32, 16)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup3/Head"]
+position = Vector2(-288, -32)
 shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup3/RigidBody2D"]
-position = Vector2(-32, 16)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup3/Head"]
+position = Vector2(-288, -32)
 scale = Vector2(0.125, 0.125)
 sprite_frames = SubResource("SpriteFrames_oqjlm")
 animation = &"new_animation"
+metadata/_edit_group_ = true
 
-[node name="RigidBody2D2" type="RigidBody2D" parent="CanvasGroup3"]
-position = Vector2(-264, 8)
-physics_material_override = SubResource("PhysicsMaterial_e2v41")
+[node name="Area2D" type="Area2D" parent="CanvasGroup3/Head"]
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup3/RigidBody2D2"]
-position = Vector2(-24, 8)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup3/Head/Area2D"]
+position = Vector2(-288, -32)
 shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup3/RigidBody2D2"]
-position = Vector2(-24, 8)
+[node name="Head2" type="RigidBody2D" parent="CanvasGroup3"]
+position = Vector2(16, 104)
+collision_layer = 4
+collision_mask = 15
+mass = 0.1
+physics_material_override = SubResource("PhysicsMaterial_e2v41")
+gravity_scale = 3.0
+script = ExtResource("1_4s1t0")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup3/Head2"]
+position = Vector2(-288, -32)
+shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup3/Head2"]
+position = Vector2(-288, -32)
 scale = Vector2(0.125, 0.125)
 sprite_frames = SubResource("SpriteFrames_oqjlm")
 animation = &"new_animation"
+metadata/_edit_group_ = true
 
-[node name="RigidBody2D4" type="RigidBody2D" parent="CanvasGroup3"]
-position = Vector2(24, 72)
-scale = Vector2(0.999253, 1)
-physics_material_override = SubResource("PhysicsMaterial_e2v41")
+[node name="Area2D" type="Area2D" parent="CanvasGroup3/Head2"]
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup3/RigidBody2D4"]
-position = Vector2(-296, -56)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup3/Head2/Area2D"]
+position = Vector2(-288, -32)
 shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup3/RigidBody2D4"]
-position = Vector2(-296.221, -56)
+[node name="Head3" type="RigidBody2D" parent="CanvasGroup3"]
+position = Vector2(-16, 104)
+collision_layer = 4
+collision_mask = 15
+mass = 0.1
+physics_material_override = SubResource("PhysicsMaterial_e2v41")
+gravity_scale = 3.0
+script = ExtResource("1_4s1t0")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup3/Head3"]
+position = Vector2(-288, -32)
+shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup3/Head3"]
+position = Vector2(-288, -32)
 scale = Vector2(0.125, 0.125)
 sprite_frames = SubResource("SpriteFrames_oqjlm")
 animation = &"new_animation"
+metadata/_edit_group_ = true
 
-[node name="RigidBody2D5" type="RigidBody2D" parent="CanvasGroup3"]
-position = Vector2(47.9821, 144)
-scale = Vector2(0.999253, 1)
-physics_material_override = SubResource("PhysicsMaterial_e2v41")
+[node name="Area2D" type="Area2D" parent="CanvasGroup3/Head3"]
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup3/RigidBody2D5"]
-position = Vector2(-320.227, -144)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup3/Head3/Area2D"]
+position = Vector2(-288, -32)
 shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup3/RigidBody2D5"]
-position = Vector2(-320.227, -144)
+[node name="Head4" type="RigidBody2D" parent="CanvasGroup3"]
+position = Vector2(0, 88)
+collision_layer = 4
+collision_mask = 15
+mass = 0.1
+physics_material_override = SubResource("PhysicsMaterial_e2v41")
+gravity_scale = 3.0
+script = ExtResource("1_4s1t0")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup3/Head4"]
+position = Vector2(-288, -32)
+shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup3/Head4"]
+position = Vector2(-288, -32)
 scale = Vector2(0.125, 0.125)
 sprite_frames = SubResource("SpriteFrames_oqjlm")
 animation = &"new_animation"
+metadata/_edit_group_ = true
 
-[node name="RigidBody2D6" type="RigidBody2D" parent="CanvasGroup3"]
-position = Vector2(16, 184)
-scale = Vector2(0.999253, 1)
-physics_material_override = SubResource("PhysicsMaterial_e2v41")
+[node name="Area2D" type="Area2D" parent="CanvasGroup3/Head4"]
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup3/RigidBody2D6"]
-position = Vector2(-320.245, -168)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup3/Head4/Area2D"]
+position = Vector2(-288, -32)
 shape = SubResource("RectangleShape2D_2nlgc")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup3/RigidBody2D6"]
-position = Vector2(-320.245, -168)
-scale = Vector2(0.125, 0.125)
-sprite_frames = SubResource("SpriteFrames_oqjlm")
-animation = &"new_animation"
-
-[node name="RigidBody2D7" type="RigidBody2D" parent="CanvasGroup3"]
-position = Vector2(48, 152)
-scale = Vector2(0.999253, 1)
-physics_material_override = SubResource("PhysicsMaterial_e2v41")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup3/RigidBody2D7"]
-position = Vector2(-320.245, -168)
-shape = SubResource("RectangleShape2D_2nlgc")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup3/RigidBody2D7"]
-position = Vector2(-320.245, -168)
-scale = Vector2(0.125, 0.125)
-sprite_frames = SubResource("SpriteFrames_oqjlm")
-animation = &"new_animation"
+metadata/_edit_group_ = true
 
 [node name="CanvasGroup4" type="CanvasGroup" parent="."]
-position = Vector2(400, 56)
+position = Vector2(288, 32)
+metadata/_edit_group_ = true
 
-[node name="RigidBody2D" type="RigidBody2D" parent="CanvasGroup4"]
-position = Vector2(-256, -16)
+[node name="Head" type="RigidBody2D" parent="CanvasGroup4"]
+position = Vector2(0, 104)
 collision_layer = 4
-collision_mask = 7
+collision_mask = 15
+mass = 0.1
 physics_material_override = SubResource("PhysicsMaterial_e2v41")
+gravity_scale = 3.0
+script = ExtResource("1_4s1t0")
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup4/RigidBody2D"]
-position = Vector2(-32, 16)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup4/Head"]
+position = Vector2(-288, -32)
 shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup4/RigidBody2D"]
-position = Vector2(-32, 16)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup4/Head"]
+position = Vector2(-288, -32)
 scale = Vector2(0.125, 0.125)
 sprite_frames = SubResource("SpriteFrames_oqjlm")
 animation = &"new_animation"
+metadata/_edit_group_ = true
 
-[node name="RigidBody2D2" type="RigidBody2D" parent="CanvasGroup4"]
-position = Vector2(-264, 8)
-physics_material_override = SubResource("PhysicsMaterial_e2v41")
+[node name="Area2D" type="Area2D" parent="CanvasGroup4/Head"]
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup4/RigidBody2D2"]
-position = Vector2(-24, 8)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup4/Head/Area2D"]
+position = Vector2(-288, -32)
 shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup4/RigidBody2D2"]
-position = Vector2(-24, 8)
+[node name="Head2" type="RigidBody2D" parent="CanvasGroup4"]
+position = Vector2(16, 104)
+collision_layer = 4
+collision_mask = 15
+mass = 0.1
+physics_material_override = SubResource("PhysicsMaterial_e2v41")
+gravity_scale = 3.0
+script = ExtResource("1_4s1t0")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup4/Head2"]
+position = Vector2(-288, -32)
+shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup4/Head2"]
+position = Vector2(-288, -32)
 scale = Vector2(0.125, 0.125)
 sprite_frames = SubResource("SpriteFrames_oqjlm")
 animation = &"new_animation"
+metadata/_edit_group_ = true
 
-[node name="RigidBody2D4" type="RigidBody2D" parent="CanvasGroup4"]
-position = Vector2(24, 72)
-scale = Vector2(0.999253, 1)
-physics_material_override = SubResource("PhysicsMaterial_e2v41")
+[node name="Area2D" type="Area2D" parent="CanvasGroup4/Head2"]
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup4/RigidBody2D4"]
-position = Vector2(-296, -56)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup4/Head2/Area2D"]
+position = Vector2(-288, -32)
 shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup4/RigidBody2D4"]
-position = Vector2(-296.221, -56)
+[node name="Head3" type="RigidBody2D" parent="CanvasGroup4"]
+position = Vector2(-16, 104)
+collision_layer = 4
+collision_mask = 15
+mass = 0.1
+physics_material_override = SubResource("PhysicsMaterial_e2v41")
+gravity_scale = 3.0
+script = ExtResource("1_4s1t0")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup4/Head3"]
+position = Vector2(-288, -32)
+shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup4/Head3"]
+position = Vector2(-288, -32)
 scale = Vector2(0.125, 0.125)
 sprite_frames = SubResource("SpriteFrames_oqjlm")
 animation = &"new_animation"
+metadata/_edit_group_ = true
 
-[node name="RigidBody2D5" type="RigidBody2D" parent="CanvasGroup4"]
-position = Vector2(47.9821, 144)
-scale = Vector2(0.999253, 1)
-physics_material_override = SubResource("PhysicsMaterial_e2v41")
+[node name="Area2D" type="Area2D" parent="CanvasGroup4/Head3"]
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup4/RigidBody2D5"]
-position = Vector2(-320.227, -144)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup4/Head3/Area2D"]
+position = Vector2(-288, -32)
 shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup4/RigidBody2D5"]
-position = Vector2(-320.227, -144)
+[node name="Head4" type="RigidBody2D" parent="CanvasGroup4"]
+position = Vector2(0, 88)
+collision_layer = 4
+collision_mask = 15
+mass = 0.1
+physics_material_override = SubResource("PhysicsMaterial_e2v41")
+gravity_scale = 3.0
+script = ExtResource("1_4s1t0")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup4/Head4"]
+position = Vector2(-288, -32)
+shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup4/Head4"]
+position = Vector2(-288, -32)
 scale = Vector2(0.125, 0.125)
 sprite_frames = SubResource("SpriteFrames_oqjlm")
 animation = &"new_animation"
+metadata/_edit_group_ = true
 
-[node name="RigidBody2D6" type="RigidBody2D" parent="CanvasGroup4"]
-position = Vector2(16, 184)
-scale = Vector2(0.999253, 1)
-physics_material_override = SubResource("PhysicsMaterial_e2v41")
+[node name="Area2D" type="Area2D" parent="CanvasGroup4/Head4"]
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup4/RigidBody2D6"]
-position = Vector2(-320.245, -168)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup4/Head4/Area2D"]
+position = Vector2(-288, -32)
 shape = SubResource("RectangleShape2D_2nlgc")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup4/RigidBody2D6"]
-position = Vector2(-320.245, -168)
-scale = Vector2(0.125, 0.125)
-sprite_frames = SubResource("SpriteFrames_oqjlm")
-animation = &"new_animation"
-
-[node name="RigidBody2D7" type="RigidBody2D" parent="CanvasGroup4"]
-position = Vector2(48, 152)
-scale = Vector2(0.999253, 1)
-physics_material_override = SubResource("PhysicsMaterial_e2v41")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup4/RigidBody2D7"]
-position = Vector2(-320.245, -168)
-shape = SubResource("RectangleShape2D_2nlgc")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup4/RigidBody2D7"]
-position = Vector2(-320.245, -168)
-scale = Vector2(0.125, 0.125)
-sprite_frames = SubResource("SpriteFrames_oqjlm")
-animation = &"new_animation"
+metadata/_edit_group_ = true
 
 [node name="CanvasGroup5" type="CanvasGroup" parent="."]
-position = Vector2(504, 56)
+position = Vector2(400, 16)
+metadata/_edit_group_ = true
 
-[node name="RigidBody2D" type="RigidBody2D" parent="CanvasGroup5"]
-position = Vector2(-256, -16)
+[node name="Head" type="RigidBody2D" parent="CanvasGroup5"]
+position = Vector2(0, 104)
 collision_layer = 4
-collision_mask = 7
+collision_mask = 15
+mass = 0.1
 physics_material_override = SubResource("PhysicsMaterial_e2v41")
+gravity_scale = 3.0
+script = ExtResource("1_4s1t0")
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup5/RigidBody2D"]
-position = Vector2(-32, 16)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup5/Head"]
+position = Vector2(-288, -32)
 shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup5/RigidBody2D"]
-position = Vector2(-32, 16)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup5/Head"]
+position = Vector2(-288, -32)
 scale = Vector2(0.125, 0.125)
 sprite_frames = SubResource("SpriteFrames_oqjlm")
 animation = &"new_animation"
+metadata/_edit_group_ = true
 
-[node name="RigidBody2D2" type="RigidBody2D" parent="CanvasGroup5"]
-position = Vector2(-264, 8)
-physics_material_override = SubResource("PhysicsMaterial_e2v41")
+[node name="Area2D" type="Area2D" parent="CanvasGroup5/Head"]
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup5/RigidBody2D2"]
-position = Vector2(-24, 8)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup5/Head/Area2D"]
+position = Vector2(-288, -32)
 shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup5/RigidBody2D2"]
-position = Vector2(-24, 8)
+[node name="Head2" type="RigidBody2D" parent="CanvasGroup5"]
+position = Vector2(16, 104)
+collision_layer = 4
+collision_mask = 15
+mass = 0.1
+physics_material_override = SubResource("PhysicsMaterial_e2v41")
+gravity_scale = 3.0
+script = ExtResource("1_4s1t0")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup5/Head2"]
+position = Vector2(-288, -32)
+shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup5/Head2"]
+position = Vector2(-288, -32)
 scale = Vector2(0.125, 0.125)
 sprite_frames = SubResource("SpriteFrames_oqjlm")
 animation = &"new_animation"
+metadata/_edit_group_ = true
 
-[node name="RigidBody2D4" type="RigidBody2D" parent="CanvasGroup5"]
-position = Vector2(24, 72)
-physics_material_override = SubResource("PhysicsMaterial_e2v41")
+[node name="Area2D" type="Area2D" parent="CanvasGroup5/Head2"]
+metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup5/RigidBody2D4"]
-position = Vector2(-296, -56)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup5/Head2/Area2D"]
+position = Vector2(-288, -32)
 shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup5/RigidBody2D4"]
-position = Vector2(-296, -56)
+[node name="Head3" type="RigidBody2D" parent="CanvasGroup5"]
+position = Vector2(-16, 104)
+collision_layer = 4
+collision_mask = 15
+mass = 0.1
+physics_material_override = SubResource("PhysicsMaterial_e2v41")
+gravity_scale = 3.0
+script = ExtResource("1_4s1t0")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup5/Head3"]
+position = Vector2(-288, -32)
+shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup5/Head3"]
+position = Vector2(-288, -32)
 scale = Vector2(0.125, 0.125)
 sprite_frames = SubResource("SpriteFrames_oqjlm")
 animation = &"new_animation"
+metadata/_edit_group_ = true
+
+[node name="Area2D" type="Area2D" parent="CanvasGroup5/Head3"]
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup5/Head3/Area2D"]
+position = Vector2(-288, -32)
+shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
+
+[node name="Head4" type="RigidBody2D" parent="CanvasGroup5"]
+position = Vector2(0, 88)
+collision_layer = 4
+collision_mask = 15
+mass = 0.1
+physics_material_override = SubResource("PhysicsMaterial_e2v41")
+gravity_scale = 3.0
+script = ExtResource("1_4s1t0")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup5/Head4"]
+position = Vector2(-288, -32)
+shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasGroup5/Head4"]
+position = Vector2(-288, -32)
+scale = Vector2(0.125, 0.125)
+sprite_frames = SubResource("SpriteFrames_oqjlm")
+animation = &"new_animation"
+metadata/_edit_group_ = true
+
+[node name="Area2D" type="Area2D" parent="CanvasGroup5/Head4"]
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CanvasGroup5/Head4/Area2D"]
+position = Vector2(-288, -32)
+shape = SubResource("RectangleShape2D_2nlgc")
+metadata/_edit_group_ = true
+
+[node name="Background2" type="Sprite2D" parent="."]
+z_index = -5
+position = Vector2(1256, -152)
+scale = Vector2(1.40948, 1.09521)
+texture = ExtResource("4_278vq")
