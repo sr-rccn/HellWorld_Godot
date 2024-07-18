@@ -3,6 +3,7 @@ extends CharacterBody2D
 
 const SPEED = 150.0
 const JUMP_VELOCITY = -200.0
+const FLOOR_NORMAL = Vector2.UP
 var last_movement = 0
 var has_double_jump = false
 var jumps = 0
@@ -46,12 +47,14 @@ func _physics_process(delta):
 	if last_movement == 1 and direction == 0 and is_on_floor():
 		if Input.is_action_just_pressed("ui_attack"):
 			_animated_sprite.play("attack_right")
+
 		else:
 			if _animated_sprite.animation != "attack_right":
 				_animated_sprite.play("stand_right")	
 				
 	if direction == 1 and !is_on_floor():
 		_animated_sprite.play("jump_right")
+
 		
 	#Mover y saltar a la izquierda
 	if last_movement == -1 and direction == 0 and is_on_floor():
@@ -81,9 +84,28 @@ func _physics_process(delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 
+
+	#Cancela animación despues de atacar
+	if _animated_sprite.is_playing() == false and _animated_sprite.animation.contains("attack"):
+		_animated_sprite.stop()
+		if last_movement == 1:
+			_animated_sprite.play("stand_right")
+		if last_movement == -1:
+			_animated_sprite.play("stand_left")
+
+
+	#Guarda el último movimiento si fue derecha o izquierda
 	if(direction != 0):
 		last_movement = direction
 		
-	print(_animated_sprite)
+
+	for i in get_slide_collision_count():
+		print(get_slide_collision(i).get_collider().name)
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+		if collider is RigidBody2D:
+			var impulse = -collision.get_normal() * 25
+			collider.apply_central_impulse(impulse)
 
 	move_and_slide()
+
