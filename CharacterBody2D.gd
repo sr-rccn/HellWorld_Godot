@@ -1,6 +1,7 @@
 extends CharacterBody2D
 @onready var _animated_sprite = $AnimatedSprite2D
-
+@onready var _animation_player = $AnimatedSprite2D/AnimationPlayer
+@onready var _sword_shape = $AnimatedSprite2D/Area2D/CollisionShape2D
 
 const SPEED = 150.0
 const JUMP_VELOCITY = -200.0
@@ -48,16 +49,18 @@ func _physics_process(delta):
 	if last_movement == 1 and direction == 0 and is_on_floor():
 		if Input.is_action_just_pressed("ui_attack"):
 			_animated_sprite.play("attack_right")
-		
+			_animation_player.play("attack_right")
+
 			#move boxes
 			var overlapping = $AnimatedSprite2D/Area2D.get_overlapping_bodies()
 			for rigid_body in overlapping:
 				if rigid_body is RigidBody2D:
 					rigid_body.apply_central_impulse(Vector2(90, 0))
+
 					#rigid_body.queue_free()
 					print(rigid_body.mass)
 			#move boxes
-			
+
 			#for area in overlapping:
 				#var parent = area.get_parent()
 				#parent.queue_free()
@@ -74,10 +77,15 @@ func _physics_process(delta):
 	if last_movement == -1 and direction == 0 and is_on_floor():
 		if Input.is_action_just_pressed("ui_attack"):
 			_animated_sprite.play("attack_left")
+			_animation_player.play("attack_left")
 			
 			var overlapping = $AnimatedSprite2D/Area2D.get_overlapping_bodies()
-			print(overlapping)
-			
+			for rigid_body in overlapping:
+				if rigid_body is RigidBody2D:
+					rigid_body.apply_central_impulse(Vector2(-90, 0))
+
+					#rigid_body.queue_free()
+					print(rigid_body.mass)
 			#for area in overlapping:
 				#var parent = area.get_parent()
 				#parent.queue_free()
