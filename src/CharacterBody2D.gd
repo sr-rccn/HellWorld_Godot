@@ -82,6 +82,7 @@ func attack_right(direction):
 			var overlapping = $AnimatedSprite2D/Area2D.get_overlapping_bodies()
 			for rigid_body in overlapping:
 				if rigid_body is RigidBody2D:
+					if rigid_body.name.contains("Dummy"): rigid_body.queue_free()
 					rigid_body.apply_central_impulse(Vector2(90, 0))
 
 		else:
@@ -98,10 +99,8 @@ func attack_left(direction):
 			var overlapping = $AnimatedSprite2D/Area2D.get_overlapping_bodies()
 			for rigid_body in overlapping:
 				if rigid_body is RigidBody2D:
+					if rigid_body.name.contains("Dummy"): rigid_body.queue_free()
 					rigid_body.apply_central_impulse(Vector2(-90, 0))
-
-					print(rigid_body.mass)
-			#
 		else:
 			if _animated_sprite.animation != "attack_left":
 				_animated_sprite.play("stand_left")
@@ -146,3 +145,10 @@ func box_collision():
 			collider.apply_central_impulse(impulse)
 
 			if collider.name.contains("Jumper"): velocity.y = JUMP_VELOCITY * 2
+
+
+
+func _on_area_2d_body_entered(body):
+	print("asd",body)
+	if body is CharacterBody2D:
+		body.get_tree().reload_current_scene()
