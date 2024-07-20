@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c25tq86bakhn8"
-path="res://.godot/imported/Background.png-d346e9ce37c7294bb8a0c89de5d380cd.ctex"
+uid="uid://ba8buu4dp8mop"
+path="res://.godot/imported/PixelSpaces Free Pack.png-9c41106ab885470d60128d578a1f7b4e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Background.png"
-dest_files=["res://.godot/imported/Background.png-d346e9ce37c7294bb8a0c89de5d380cd.ctex"]
+source_file="res://assets/PixelSpaces Free Pack.png"
+dest_files=["res://.godot/imported/PixelSpaces Free Pack.png-9c41106ab885470d60128d578a1f7b4e.ctex"]
 
 [params]
 
