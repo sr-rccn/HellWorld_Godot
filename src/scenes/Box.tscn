@@ -18,6 +18,7 @@ animations = [{
 
 [node name="Box" type="RigidBody2D"]
 collision_layer = 4
+collision_mask = 5
 mass = 0.5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
