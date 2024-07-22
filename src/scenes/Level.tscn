@@ -1423,6 +1423,7 @@ position = Vector2(923.745, -7.30454)
 texture = ExtResource("7_vydi1")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
+visible = false
 position = Vector2(0, 88)
 color = Color(0.539, 0.539, 0.539, 1)
 

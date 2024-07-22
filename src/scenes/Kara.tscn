@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://cs2e0srrlt42w"]
+[gd_scene load_steps=75 format=3 uid="uid://cs2e0srrlt42w"]
 
 [ext_resource type="Script" path="res://src/CharacterBody2D.gd" id="1_mykga"]
 [ext_resource type="Texture2D" uid="uid://dwo522vl7udxn" path="res://src/assets/image.png" id="2_iywd5"]
@@ -188,6 +188,22 @@ region = Rect2(250, 37, 50, 37)
 [sub_resource type="AtlasTexture" id="AtlasTexture_j20xe"]
 atlas = ExtResource("3_wil1e")
 region = Rect2(300, 37, 50, 37)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4qivi"]
+atlas = ExtResource("2_iywd5")
+region = Rect2(200, 333, 50, 37)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gs6mu"]
+atlas = ExtResource("2_iywd5")
+region = Rect2(150, 333, 50, 37)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_24r1x"]
+atlas = ExtResource("2_iywd5")
+region = Rect2(100, 333, 50, 37)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_46dok"]
+atlas = ExtResource("2_iywd5")
+region = Rect2(50, 333, 50, 37)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jfpt8"]
 atlas = ExtResource("3_wil1e")
@@ -380,7 +396,7 @@ animations = [{
 "duration": 3.0,
 "texture": SubResource("AtlasTexture_mudix")
 }],
-"loop": true,
+"loop": false,
 "name": &"run_left",
 "speed": 20.0
 }, {
@@ -409,6 +425,23 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_4qivi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gs6mu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_24r1x")
+}, {
+"duration": 50000.0,
+"texture": SubResource("AtlasTexture_46dok")
+}],
+"loop": false,
+"name": &"sit_down_left",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_jfpt8")
 }, {
 "duration": 1.0,
@@ -417,12 +450,29 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_jawpm")
 }, {
-"duration": 500000.0,
+"duration": 50000.0,
 "texture": SubResource("AtlasTexture_qkahl")
 }],
 "loop": false,
 "name": &"sit_down_right",
-"speed": 5.0
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_46dok")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_24r1x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gs6mu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4qivi")
+}],
+"loop": false,
+"name": &"sit_up_left",
+"speed": 15.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -439,7 +489,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"sit_up_right",
-"speed": 5.0
+"speed": 15.0
 }, {
 "frames": [{
 "duration": 1.0,
