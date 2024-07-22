@@ -13,7 +13,8 @@ var has_double_jump = false
 var jumps = 0
 var sit_cooldown = 500
 # Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+#var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+var gravity = 800
 
 
 func _physics_process(delta):
@@ -24,16 +25,7 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	
-	if is_on_floor():
-		jumps = 0
-		has_double_jump = true
-		
-	if !is_on_floor() and jumps > 1:
-		has_double_jump = false
-		
-	if is_on_wall():
-		velocity = velocity / 2
-		has_double_jump = true
+
 
 	idle(direction)
 	
@@ -52,13 +44,9 @@ func _physics_process(delta):
 
 			
 func idle(direction):
-	#var animation_playing = _animated_sprite.is_playing()
 	var animation_type = _animated_sprite.animation
 	var button_down_pressed = Input.is_action_pressed("ui_down", true)
 	
-	#is_playing_by_name(_animated_sprite, "sit_up_right")
-
-	#print(!button_down_pressed and is_playing_by_name(_animated_sprite, "sit_up_right"))
 	if(is_playing_by_name("sit_up")):
 		return #
 		
@@ -95,13 +83,12 @@ func on_floor_and_down():
 				if last_movement == 1: _animated_sprite.play("sit_down_right")
 				if last_movement == -1: _animated_sprite.play("sit_down_left")
 	
-func on_floor_and_jump(direction):	
-	return #
-	#if direction == 0 and !is_on_floor():
-		#if last_movement == -1:
-			#_animated_sprite.play("jump_left")
-		#if last_movement == 1:
-			#_animated_sprite.play("jump_right")
+func on_floor_and_jump(direction):
+	if direction == 0 and !is_on_floor():
+		if last_movement == -1:
+			_animated_sprite.play("jump_left")
+		if last_movement == 1:
+			_animated_sprite.play("jump_right")
 	
 func move_and_jump_left(direction):
 	if !is_on_wall():
@@ -149,18 +136,32 @@ func attack_left(direction):
 				#_animated_sprite.play("stand_left")
 				
 func handle_jump(direction):	# Handle jump.
+	
+	if is_on_floor():
+		jumps = 0
+		has_double_jump = true
+		
+	if !is_on_floor() and jumps > 1:
+		has_double_jump = false
+		
+	if is_on_wall():
+		velocity = velocity / 2
+		has_double_jump = true
+		jumps = 1
+	
 	if Input.is_action_just_pressed("ui_accept") and has_double_jump :
 		jumps = jumps + 1
 		velocity.y = JUMP_VELOCITY
-		
+			
 		if is_on_wall():
-			jumps = 1
+			jumps = jumps + 2
 		
 		if direction == 1:
 			_animated_sprite.play("jump_right")
 		if direction == -1:
 			_animated_sprite.play("jump_left")
 			
+		has_double_jump = true
 		# Double jump
 		if jumps < 1:
 			jumps = jumps + 1
@@ -191,19 +192,32 @@ func save_last_movement(direction):
 
 func box_collision():
 	for i in get_slide_collision_count():
+		print(i)
 		var collision = get_slide_collision(i)
-		#print(collision)
 		var collider = collision.get_collider()
 		if collider is RigidBody2D:
 			var impulse = -collision.get_normal()
 			collider.apply_central_impulse(impulse)
+			
 			if collider.name.contains("Jumper"): velocity.y = JUMP_VELOCITY * 2
 
 func wall_collision(direction):
-	if is_on_wall() and direction == 1:
-		_animated_sprite.play("wall_slide_right")
-	if is_on_wall() and direction == -1:
-		_animated_sprite.play("wall_slide_left")
+	if is_on_wall():
+		velocity = velocity / 3
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+
+	if direction == 0:
+		if is_on_wall() and direction == 0 and last_movement == 1:
+			_animated_sprite.play("wall_slide_right")
+		if is_on_wall() and direction == 0 and last_movement == -1:
+			_animated_sprite.play("wall_slide_left")
+	else:	
+		if is_on_wall() and direction == 1:
+			_animated_sprite.play("wall_slide_right")
+		if is_on_wall() and direction == -1:
+			_animated_sprite.play("wall_slide_left")
 	
 func _on_area_2d_body_entered(body):
 	if body is CharacterBody2D:

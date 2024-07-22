@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://c8r5a35ijvgo"]
+[gd_scene load_steps=5 format=3 uid="uid://c8r5a35ijvgo"]
 
 [ext_resource type="Texture2D" uid="uid://b4pf1c8gkdw5l" path="res://src/assets/icon.svg" id="1_3cvbb"]
 
@@ -16,6 +16,10 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_m3kly"]
+a = Vector2(-8, 9.53674e-07)
+b = Vector2(8, -9.53674e-07)
+
 [node name="Jumper" type="RigidBody2D"]
 modulate = Color(0.171687, 0.403969, 1, 1)
 collision_layer = 4
@@ -24,8 +28,13 @@ mass = 0.5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_dnaf8")
+debug_color = Color(1, 1, 1, 0.42)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.125, 0.125)
 sprite_frames = SubResource("SpriteFrames_inv4h")
 animation = &"new_animation"
+
+[node name="jump_zone" type="CollisionShape2D" parent="."]
+position = Vector2(0, -8)
+shape = SubResource("SegmentShape2D_m3kly")
