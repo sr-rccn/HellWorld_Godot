@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://c8r5a35ijvgo"]
+
+[ext_resource type="Texture2D" uid="uid://b4pf1c8gkdw5l" path="res://src/assets/icon.svg" id="1_3cvbb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dnaf8"]
+size = Vector2(16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_inv4h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_3cvbb")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 5.0
+}]
+
+[node name="Jumper" type="RigidBody2D"]
+modulate = Color(0.171687, 0.403969, 1, 1)
+collision_layer = 4
+collision_mask = 15
+mass = 0.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_dnaf8")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.125, 0.125)
+sprite_frames = SubResource("SpriteFrames_inv4h")
+animation = &"new_animation"

@@ -1,9 +1,9 @@
 extends CharacterBody2D
 @onready var _animated_sprite = $AnimatedSprite2D
 @onready var _animation_player = $AnimatedSprite2D/AnimationPlayer
-@onready var _sword_shape = $AnimatedSprite2D/Area2D/CollisionShape2D
-@onready var jumper = $"../Jumper/CollisionShape2D"
-
+#@onready var _sword_shape = $AnimatedSprite2D/Sword/CollisionShape2D
+#@onready var jumper = $"../Jumper/CollisionShape2D"
+	
 const SPEED = 150.0
 const JUMP_VELOCITY = -200.0
 const FLOOR_NORMAL = Vector2.UP
@@ -16,7 +16,8 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 func _physics_process(delta):
 	var direction = Input.get_axis("ui_left", "ui_right")
-	
+	var DownPressed = Input.is_action_pressed("ui_down", true)
+	var DownReleased = Input.is_action_just_released("ui_down", true)
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y += gravity * delta
@@ -43,17 +44,43 @@ func _physics_process(delta):
 			jumps = jumps + 1
 			velocity.y = JUMP_VELOCITY
 	
-	
-	
+	on_floor_and_down(DownPressed)
+	attack_left(direction)
+	attack_right(direction)
 	on_floor_and_jump(direction)
 	move_and_jump_left(direction)
 	move_and_jump_right(direction)
-	attack_left(direction)
-	attack_right(direction)
 	move_character(direction)
 	save_last_movement(direction)
-	cancel_attack_animation()
+	cancel_attack_animation(DownPressed)
 	box_collision()
+	
+func cancel_attack_animation(DownPressed):
+		#Cancela animación despues de atacar
+
+	if _animated_sprite.is_playing() == false and _animated_sprite.animation.contains("attack") and !DownPressed:
+		_animated_sprite.stop()
+		
+		if last_movement == 1:
+			_animated_sprite.play("stand_right")
+		if last_movement == -1:
+			_animated_sprite.play("stand_left")
+	
+	
+func on_floor_and_down(DownPressed):	
+	print(DownPressed)
+	print(_animated_sprite.animation)
+	if is_on_floor() and DownPressed:
+
+		if last_movement == 1:
+			if DownPressed: 
+				_animated_sprite.play("sit_down_right")
+			else: _animated_sprite.play("sit_up_right")
+		else:
+			if DownPressed : 
+				_animated_sprite.play("sit_down_right")
+			else: _animated_sprite.play("sit_up_right")
+
 	
 func on_floor_and_jump(direction):	
 	if direction == 0 and !is_on_floor():
@@ -71,7 +98,7 @@ func move_and_jump_right(direction):
 	if direction == 1 and !is_on_floor():
 		_animated_sprite.play("jump_right")
 	
-func attack_right(direction):
+func attack_right(direction, ):
 	#Mover y saltar a la derecha
 	if last_movement == 1 and direction == 0 and is_on_floor():
 		if Input.is_action_just_pressed("ui_attack"):
@@ -79,9 +106,10 @@ func attack_right(direction):
 			_animation_player.play("attack_right")
 
 			#move boxes
-			var overlapping = $AnimatedSprite2D/Area2D.get_overlapping_bodies()
+			var overlapping = $AnimatedSprite2D/Sword.get_overlapping_bodies()
 			for rigid_body in overlapping:
 				if rigid_body is RigidBody2D:
+					print(rigid_body)
 					if rigid_body.name.contains("Dummy"): rigid_body.queue_free()
 					rigid_body.apply_central_impulse(Vector2(90, 0))
 
@@ -96,7 +124,7 @@ func attack_left(direction):
 			_animated_sprite.play("attack_left")
 			_animation_player.play("attack_left")
 			
-			var overlapping = $AnimatedSprite2D/Area2D.get_overlapping_bodies()
+			var overlapping = $AnimatedSprite2D/Sword.get_overlapping_bodies()
 			for rigid_body in overlapping:
 				if rigid_body is RigidBody2D:
 					if rigid_body.name.contains("Dummy"): rigid_body.queue_free()
@@ -120,15 +148,6 @@ func move_character(direction):
 		
 		move_and_slide()
 
-func cancel_attack_animation():
-		#Cancela animación despues de atacar
-	if _animated_sprite.is_playing() == false and _animated_sprite.animation.contains("attack"):
-		_animated_sprite.stop()
-		
-		if last_movement == 1:
-			_animated_sprite.play("stand_right")
-		if last_movement == -1:
-			_animated_sprite.play("stand_left")
 
 func save_last_movement(direction):
 	#Guarda el último movimiento si fue derecha o izquierda
@@ -143,12 +162,10 @@ func box_collision():
 		if collider is RigidBody2D:
 			var impulse = -collision.get_normal()
 			collider.apply_central_impulse(impulse)
-
 			if collider.name.contains("Jumper"): velocity.y = JUMP_VELOCITY * 2
 
 
 
 func _on_area_2d_body_entered(body):
-	print("asd",body)
 	if body is CharacterBody2D:
-		body.get_tree().reload_current_scene()
+		body.get_tree().call_deferred("reload_current_scene")
