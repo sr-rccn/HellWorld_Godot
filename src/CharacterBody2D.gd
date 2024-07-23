@@ -25,9 +25,11 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
 
-
+	if is_on_floor() and is_on_wall():
+		print('alo')
+		
 	idle(direction)
-	
+	print(_animation_player.current_animation)
 	wall_collision(direction)
 	handle_jump(direction)
 	on_floor_and_down(direction)
@@ -65,9 +67,11 @@ func cancel_attack_animation():
 		_animated_sprite.stop()
 		
 		if last_movement == 1:
-			_animated_sprite.play("stand_right")
+			#_animated_sprite.play("stand_right")
+			_animation_player.play("stand_right")
 		if last_movement == -1:
-			_animated_sprite.play("stand_left")
+			#_animated_sprite.play("stand_left")
+			_animation_player.play("stand_left")
 	
 func on_floor_and_down(direction):
 	var button_down_pressed = Input.is_action_pressed("ui_down", true)
@@ -80,14 +84,14 @@ func on_floor_and_down(direction):
 
 			if last_movement == 1:
 				velocity.x += 1000
-				velocity.y = JUMP_VELOCITY*2
-				_animated_sprite.play("floor_slide_right")
+				#velocity.y = JUMP_VELOCITY Dash
+				#_animated_sprite.play("floor_slide_right")
 				_animation_player.play("floor_slide_right")
 				
 			if last_movement == -1:
 				velocity.x += -1000
-				velocity.y = JUMP_VELOCITY *2
-				_animated_sprite.play("floor_slide_left")
+				#velocity.y = JUMP_VELOCITY Dash
+				#_animated_sprite.play("floor_slide_left")
 				_animation_player.play("floor_slide_left")
 				
 		if button_down_released:
@@ -95,30 +99,31 @@ func on_floor_and_down(direction):
 			else: _animated_sprite.play("sit_up_left")
 			
 		if button_down_pressed and !is_playing_by_name("floor_slide"):	
-				if last_movement == 1: _animated_sprite.play("sit_down_right")
-				if last_movement == -1: _animated_sprite.play("sit_down_left")
+				if last_movement == 1:
+					_animation_player.play("sit_down_right")
+				if last_movement == -1: 
+					_animation_player.play("sit_down_left")
 
 func on_floor_and_jump(direction):
 	if direction == 0 and !is_on_floor():
 		if last_movement == -1:
-			_animated_sprite.play("jump_left")
+			_animation_player.play("jump_left")
 		if last_movement == 1:
-			_animated_sprite.play("jump_right")
+			_animation_player.play("jump_right")
 	
 func move_and_jump_left(direction):
 	if !is_on_wall():
 		if direction == -1 and !is_on_floor():
-			_animated_sprite.play("jump_left")
+			_animation_player.play("jump_left")
 
-	
 func move_and_jump_right(direction):
 	if !is_on_wall():
 		if direction == 1 and !is_on_floor():
-			_animated_sprite.play("jump_right")
+			_animation_player.play("jump_right")
 	#if is_on_wall():
 		#var shape = $CollisionShape2D
 		#shape.appl
-	
+
 func attack_right(direction):
 	#Mover y saltar a la derecha
 	if Input.is_action_pressed("ui_attack"):
@@ -133,7 +138,7 @@ func attack_right(direction):
 					if rigid_body.name.contains("Dummy"): 
 						rigid_body.queue_free()
 					rigid_body.apply_central_impulse(Vector2(90, 0))
-					
+
 func attack_left(direction):
 	#Mover y saltar a la izquierda
 	if Input.is_action_pressed("ui_attack"):
@@ -149,17 +154,17 @@ func attack_left(direction):
 		#else:
 			#if _animated_sprite.animation != "attack_left":
 				#_animated_sprite.play("stand_left")
-				
+
 func handle_jump(direction):	# Handle jump.
 	var button_down_pressed = Input.is_action_pressed("ui_down", true)
-	
+
 	if is_on_floor():
 		jumps = 0
 		has_double_jump = true
-		
+
 	if !is_on_floor() and jumps > 1:
 		has_double_jump = false
-		
+
 	if is_on_wall():
 		velocity = velocity / 2
 		has_double_jump = true
@@ -168,7 +173,7 @@ func handle_jump(direction):	# Handle jump.
 	if Input.is_action_just_pressed("ui_accept") and has_double_jump and !button_down_pressed:
 		jumps = jumps + 1
 		velocity.y = JUMP_VELOCITY
-			
+		
 		if is_on_wall():
 			jumps = jumps + 2
 		
@@ -178,33 +183,29 @@ func handle_jump(direction):	# Handle jump.
 			_animated_sprite.play("jump_left")
 			
 		has_double_jump = true
-		# Double jump
-		if jumps < 1:
-			jumps = jumps + 1
-			velocity.y = JUMP_VELOCITY
-	
-
+	else:
+		if is_playing_by_name("floor_slide"):
+			_animation_player.stop()
+			
 func move_character(direction):
 		if direction:
 			velocity.x = (direction * SPEED)
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 			
-			
 		if Input.is_action_pressed("ui_right") and is_on_floor():
-			_animated_sprite.play("run_right")
+			#_animated_sprite.play("run_right")
+			_animation_player.play("run_right")
 			
 		if Input.is_action_pressed("ui_left") and is_on_floor():
-			_animated_sprite.play("run_left")
+			_animation_player.play("run_left")
 		
 		move_and_slide()
-
 
 func save_last_movement(direction):
 	#Guarda el último movimiento si fue derecha o izquierda
 	if(direction != 0):
 		last_movement = direction		
-
 
 func box_collision():
 	for i in get_slide_collision_count():
@@ -217,35 +218,34 @@ func box_collision():
 			if collider.name.contains("Jumper"): velocity.y = JUMP_VELOCITY * 2
 
 func wall_collision(direction):
-	if is_on_wall():
+	if is_on_wall() and !is_on_floor():
 		velocity = velocity / 3
-	for i in get_slide_collision_count():
-		var collision = get_slide_collision(i)
-		var collider = collision.get_collider()
+		for i in get_slide_collision_count():
+			var collision = get_slide_collision(i)
+			var collider = collision.get_collider()
 
-	if direction == 0:
-		if is_on_wall() and direction == 0 and last_movement == 1:
-			_animated_sprite.play("wall_slide_right")
-		if is_on_wall() and direction == 0 and last_movement == -1:
-			_animated_sprite.play("wall_slide_left")
-	else:	
-		if is_on_wall() and direction == 1:
-			_animated_sprite.play("wall_slide_right")
-		if is_on_wall() and direction == -1:
-			_animated_sprite.play("wall_slide_left")
-	
+		if direction == 0:
+			if is_on_wall() and direction == 0 and last_movement == 1:
+				_animation_player.play("wall_slide_right")
+			if is_on_wall() and direction == 0 and last_movement == -1:
+				_animation_player.play("wall_slide_left")
+		else:	
+			if is_on_wall() and direction == 1:
+				_animation_player.play("wall_slide_right")
+			if is_on_wall() and direction == -1:
+				_animation_player.play("wall_slide_left")
+		
 func _on_area_2d_body_entered(body):
 	if body is CharacterBody2D:
 		body.get_tree().call_deferred("reload_current_scene")
 		
 func stand(direction):
 	if direction == 0 and last_movement == 1:
-		_animated_sprite.play("stand_right")
+		#_animated_sprite.play("stand_right")
 		_animation_player.play("stand_right")
 	if direction == 0 and last_movement == -1:
-		_animated_sprite.play("stand_left")
-		_animation_player.play("stand_right")
+		#_animated_sprite.play("stand_left")
+		_animation_player.play("stand_left")
 
-		
 func is_playing_by_name(animation_type):
-	return _animated_sprite.is_playing() == true and _animated_sprite.animation.contains(animation_type)
+	return _animated_sprite.is_playing() == true and (_animated_sprite.animation.contains(animation_type) or _animation_player.current_animation.contains(animation_type))
