@@ -24,14 +24,13 @@ func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y += gravity * delta
-	
 
 
 	idle(direction)
 	
 	wall_collision(direction)
 	handle_jump(direction)
-	on_floor_and_down()
+	on_floor_and_down(direction)
 	attack_left(direction)
 	attack_right(direction)
 	on_floor_and_jump(direction)
@@ -70,7 +69,7 @@ func cancel_attack_animation():
 		if last_movement == -1:
 			_animated_sprite.play("stand_left")
 	
-func on_floor_and_down():
+func on_floor_and_down(direction):
 	var button_down_pressed = Input.is_action_pressed("ui_down", true)
 	var button_down_released = Input.is_action_just_released("ui_down", true)
 
@@ -78,10 +77,16 @@ func on_floor_and_down():
 	
 	if is_on_floor() and button_down_pressed:
 		if button_jump_just_pressed:
+
 			if last_movement == 1:
+				velocity.x += 1000
+				velocity.y = JUMP_VELOCITY*2
 				_animated_sprite.play("floor_slide_right")
 				_animation_player.play("floor_slide_right")
+				
 			if last_movement == -1:
+				velocity.x += -1000
+				velocity.y = JUMP_VELOCITY *2
 				_animated_sprite.play("floor_slide_left")
 				_animation_player.play("floor_slide_left")
 				
@@ -92,8 +97,7 @@ func on_floor_and_down():
 		if button_down_pressed and !is_playing_by_name("floor_slide"):	
 				if last_movement == 1: _animated_sprite.play("sit_down_right")
 				if last_movement == -1: _animated_sprite.play("sit_down_left")
-	#else:
-		#stand(direction)
+
 func on_floor_and_jump(direction):
 	if direction == 0 and !is_on_floor():
 		if last_movement == -1:
@@ -241,7 +245,7 @@ func stand(direction):
 	if direction == 0 and last_movement == -1:
 		_animated_sprite.play("stand_left")
 		_animation_player.play("stand_right")
-		#_animation_player.play("stand_right")
+
 		
 func is_playing_by_name(animation_type):
 	return _animated_sprite.is_playing() == true and _animated_sprite.animation.contains(animation_type)
