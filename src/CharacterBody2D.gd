@@ -74,15 +74,26 @@ func on_floor_and_down():
 	var button_down_pressed = Input.is_action_pressed("ui_down", true)
 	var button_down_released = Input.is_action_just_released("ui_down", true)
 
-	if is_on_floor():
+	var button_jump_just_pressed = Input.is_action_just_pressed("ui_accept")
+	
+	if is_on_floor() and button_down_pressed:
+		if button_jump_just_pressed:
+			if last_movement == 1:
+				_animated_sprite.play("floor_slide_right")
+				_animation_player.play("floor_slide_right")
+			if last_movement == -1:
+				_animated_sprite.play("floor_slide_left")
+				_animation_player.play("floor_slide_left")
+				
 		if button_down_released:
 			if last_movement == 1: _animated_sprite.play("sit_up_right")
 			else: _animated_sprite.play("sit_up_left")
 			
-		if button_down_pressed:	
+		if button_down_pressed and !is_playing_by_name("floor_slide"):	
 				if last_movement == 1: _animated_sprite.play("sit_down_right")
 				if last_movement == -1: _animated_sprite.play("sit_down_left")
-	
+	#else:
+		#stand(direction)
 func on_floor_and_jump(direction):
 	if direction == 0 and !is_on_floor():
 		if last_movement == -1:
@@ -136,6 +147,7 @@ func attack_left(direction):
 				#_animated_sprite.play("stand_left")
 				
 func handle_jump(direction):	# Handle jump.
+	var button_down_pressed = Input.is_action_pressed("ui_down", true)
 	
 	if is_on_floor():
 		jumps = 0
@@ -148,8 +160,8 @@ func handle_jump(direction):	# Handle jump.
 		velocity = velocity / 2
 		has_double_jump = true
 		jumps = 1
-	
-	if Input.is_action_just_pressed("ui_accept") and has_double_jump :
+
+	if Input.is_action_just_pressed("ui_accept") and has_double_jump and !button_down_pressed:
 		jumps = jumps + 1
 		velocity.y = JUMP_VELOCITY
 			
@@ -192,7 +204,6 @@ func save_last_movement(direction):
 
 func box_collision():
 	for i in get_slide_collision_count():
-		print(i)
 		var collision = get_slide_collision(i)
 		var collider = collision.get_collider()
 		if collider is RigidBody2D:
@@ -226,8 +237,11 @@ func _on_area_2d_body_entered(body):
 func stand(direction):
 	if direction == 0 and last_movement == 1:
 		_animated_sprite.play("stand_right")
+		_animation_player.play("stand_right")
 	if direction == 0 and last_movement == -1:
 		_animated_sprite.play("stand_left")
+		_animation_player.play("stand_right")
+		#_animation_player.play("stand_right")
 		
 func is_playing_by_name(animation_type):
 	return _animated_sprite.is_playing() == true and _animated_sprite.animation.contains(animation_type)
