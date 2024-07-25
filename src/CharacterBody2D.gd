@@ -9,9 +9,13 @@ const JUMP_VELOCITY = -200.0
 const FLOOR_NORMAL = Vector2.UP
 var last_movement = 0
 var last_animation = ""
+
 var has_double_jump = false
+var sliding = false
 var jumps = 0
-var sit_cooldown = 500
+var jumping = false
+
+var sitting = false
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 #var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var gravity = 800
@@ -19,116 +23,70 @@ var gravity = 800
 
 func _physics_process(delta):
 	var direction = Input.get_axis("ui_left", "ui_right")
+	
+
 	#var DownPressed = Input.is_action_pressed("ui_down", true)
 	#var DownReleased = Input.is_action_just_released("ui_down", true)
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y += gravity * delta
 
-	if is_on_floor() and is_on_wall():
-		print('alo')
+	
+	
 		
-	idle(direction)
-	print(_animation_player.current_animation)
-	wall_collision(direction)
-	handle_jump(direction)
-	on_floor_and_down(direction)
-	attack_left(direction)
-	attack_right(direction)
-	on_floor_and_jump(direction)
-	move_and_jump_left(direction)
-	move_and_jump_right(direction)
+	var actual_direction = direction
+	#idle(direction, last_movement)
 	move_character(direction)
+
+	on_air(direction, last_movement)
+	on_ground(direction, last_movement)
+	wall_collision()
+	handle_jump(direction, last_movement)
+	handle_down()
+	on_floor_and_down()
+	attack_left(direction, last_movement)
+	attack_right(direction, last_movement)
+
+	#move_and_jump_left()
+	#move_and_jump_right()
+
 	save_last_movement(direction)
 	box_collision()
-
-
+	print(sliding)
 			
-func idle(direction):
-	var animation_type = _animated_sprite.animation
-	var button_down_pressed = Input.is_action_pressed("ui_down", true)
-	
-	if(is_playing_by_name("sit_up")):
-		return #
-		
-	if is_on_floor() and direction == 0 and !button_down_pressed:
-		if animation_type.contains("jump") :
-			stand(direction)
-				
-		if !animation_type.contains("attack"):
-			stand(direction)
-				
-		if !is_playing_by_name("attack"):
-			stand(direction)
+func idle(direction, last_direction):
+	if direction == 0:
 
-func cancel_attack_animation():
-		#Cancela animación despues de atacar
-	if is_playing_by_name("attack"):
-		_animated_sprite.stop()
-		
-		if last_movement == 1:
-			#_animated_sprite.play("stand_right")
-			_animation_player.play("stand_right")
-		if last_movement == -1:
-			#_animated_sprite.play("stand_left")
-			_animation_player.play("stand_left")
-	
-func on_floor_and_down(direction):
+		animate_stand(last_direction)
+			
+
+func on_floor_and_down():
 	var button_down_pressed = Input.is_action_pressed("ui_down", true)
 	var button_down_released = Input.is_action_just_released("ui_down", true)
-
 	var button_jump_just_pressed = Input.is_action_just_pressed("ui_accept")
-	
-	if is_on_floor() and button_down_pressed:
+		
+	if is_on_floor() and button_down_pressed and !sitting:
+		sitting = true
+		
 		if button_jump_just_pressed:
-
+			sliding = true
 			if last_movement == 1:
 				velocity.x += 1000
-				#velocity.y = JUMP_VELOCITY Dash
-				#_animated_sprite.play("floor_slide_right")
-				_animation_player.play("floor_slide_right")
+
 				
 			if last_movement == -1:
 				velocity.x += -1000
-				#velocity.y = JUMP_VELOCITY Dash
-				#_animated_sprite.play("floor_slide_left")
-				_animation_player.play("floor_slide_left")
 				
-		if button_down_released:
-			if last_movement == 1: _animated_sprite.play("sit_up_right")
-			else: _animated_sprite.play("sit_up_left")
+	if !button_down_pressed and button_down_released:
+		sitting = false
 			
-		if button_down_pressed and !is_playing_by_name("floor_slide"):	
-				if last_movement == 1:
-					_animation_player.play("sit_down_right")
-				if last_movement == -1: 
-					_animation_player.play("sit_down_left")
+			
 
-func on_floor_and_jump(direction):
-	if direction == 0 and !is_on_floor():
-		if last_movement == -1:
-			_animation_player.play("jump_left")
-		if last_movement == 1:
-			_animation_player.play("jump_right")
-	
-func move_and_jump_left(direction):
-	if !is_on_wall():
-		if direction == -1 and !is_on_floor():
-			_animation_player.play("jump_left")
 
-func move_and_jump_right(direction):
-	if !is_on_wall():
-		if direction == 1 and !is_on_floor():
-			_animation_player.play("jump_right")
-	#if is_on_wall():
-		#var shape = $CollisionShape2D
-		#shape.appl
-
-func attack_right(direction):
+func attack_right(direction, last_movement):
 	#Mover y saltar a la derecha
 	if Input.is_action_pressed("ui_attack"):
 		if last_movement == 1 and direction == 0 and is_on_floor():
-			_animated_sprite.play("attack_right")
 			_animation_player.play("attack_right")
 
 			#move boxes
@@ -139,53 +97,44 @@ func attack_right(direction):
 						rigid_body.queue_free()
 					rigid_body.apply_central_impulse(Vector2(90, 0))
 
-func attack_left(direction):
+func attack_left(direction, last_movement):
 	#Mover y saltar a la izquierda
 	if Input.is_action_pressed("ui_attack"):
 		if last_movement == -1 and direction == 0 and is_on_floor():
-			_animated_sprite.play("attack_left")
 			_animation_player.play("attack_left")
 			
 			var overlapping = $AnimatedSprite2D/Sword.get_overlapping_bodies()
 			for rigid_body in overlapping:
 				if rigid_body is RigidBody2D:
-					if rigid_body.name.contains("Dummy"): rigid_body.queue_free()
+					if rigid_body.name.contains("Dummy"): 
+						rigid_body.queue_free()
 					rigid_body.apply_central_impulse(Vector2(-90, 0))
 		#else:
 			#if _animated_sprite.animation != "attack_left":
-				#_animated_sprite.play("stand_left")
+				#_animated_spritex("stand_left")
 
-func handle_jump(direction):	# Handle jump.
+func handle_jump(direction, last_movement):	# Handle jump.
 	var button_down_pressed = Input.is_action_pressed("ui_down", true)
 
-	if is_on_floor():
-		jumps = 0
-		has_double_jump = true
-
-	if !is_on_floor() and jumps > 1:
-		has_double_jump = false
-
-	if is_on_wall():
-		velocity = velocity / 2
-		has_double_jump = true
-		jumps = 1
-
-	if Input.is_action_just_pressed("ui_accept") and has_double_jump and !button_down_pressed:
+	if Input.is_action_just_pressed("ui_accept"):
+		jumping = true
 		jumps = jumps + 1
 		velocity.y = JUMP_VELOCITY
-		
 		if is_on_wall():
 			jumps = jumps + 2
-		
-		if direction == 1:
-			_animated_sprite.play("jump_right")
-		if direction == -1:
-			_animated_sprite.play("jump_left")
-			
 		has_double_jump = true
-	else:
-		if is_playing_by_name("floor_slide"):
-			_animation_player.stop()
+		
+	if is_playing_by_name("jump"): jumping = true
+	else: jumping = false
+
+func handle_down():	# Handle jump.
+	var button_down_pressed = Input.is_action_pressed("ui_down", true)
+	
+	if button_down_pressed: 
+		sitting = true
+	else: 
+		sitting = false
+	
 			
 func move_character(direction):
 		if direction:
@@ -193,13 +142,6 @@ func move_character(direction):
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 			
-		if Input.is_action_pressed("ui_right") and is_on_floor():
-			#_animated_sprite.play("run_right")
-			_animation_player.play("run_right")
-			
-		if Input.is_action_pressed("ui_left") and is_on_floor():
-			_animation_player.play("run_left")
-		
 		move_and_slide()
 
 func save_last_movement(direction):
@@ -214,38 +156,112 @@ func box_collision():
 		if collider is RigidBody2D:
 			var impulse = -collision.get_normal()
 			collider.apply_central_impulse(impulse)
-			
+			$SlidingCollision.disabled = true
 			if collider.name.contains("Jumper"): velocity.y = JUMP_VELOCITY * 2
-
-func wall_collision(direction):
+			
+			#var kick_impulse = 0
+			#if last_movement == 1: kick_impulse = 35
+			#if last_movement == -1: kick_impulse = -35
+			#collider.apply_central_impulse(Vector2(kick_impulse, 0))
+			
+func wall_collision():
 	if is_on_wall() and !is_on_floor():
 		velocity = velocity / 3
 		for i in get_slide_collision_count():
 			var collision = get_slide_collision(i)
 			var collider = collision.get_collider()
 
-		if direction == 0:
-			if is_on_wall() and direction == 0 and last_movement == 1:
-				_animation_player.play("wall_slide_right")
-			if is_on_wall() and direction == 0 and last_movement == -1:
-				_animation_player.play("wall_slide_left")
-		else:	
-			if is_on_wall() and direction == 1:
-				_animation_player.play("wall_slide_right")
-			if is_on_wall() and direction == -1:
-				_animation_player.play("wall_slide_left")
+		#if direction == 0:
+			#if is_on_wall() and direction == 0 and last_movement == 1:
+				#_animation_player.play("wall_slide_right")
+			#if is_on_wall() and direction == 0 and last_movement == -1:
+				#_animation_player.play("wall_slide_left")
+		#else:	
+			#if is_on_wall() and direction == 1:
+				#_animation_player.play("wall_slide_right")
+			#if is_on_wall() and direction == -1:
+				#_animation_player.play("wall_slide_left")
 		
 func _on_area_2d_body_entered(body):
 	if body is CharacterBody2D:
 		body.get_tree().call_deferred("reload_current_scene")
 		
-func stand(direction):
-	if direction == 0 and last_movement == 1:
-		#_animated_sprite.play("stand_right")
+
+
+func animate_air(direction):		
+	if direction > 0:
+		_animation_player.play("falling_down_right")
+	elif direction < 0:
+		_animation_player.play("falling_down_left")
+
+func on_air(direction, last_movement):
+	if !is_on_floor():
+		if !jumping:
+			if direction == 0:
+				animate_air(last_movement)
+			else:
+				animate_air(direction)
+		else:
+			if direction == 0 and jumping:
+				animate_jump(last_movement)
+			else:
+				animate_jump(direction)
+	
+func animate_run(direction):
+	if direction > 0:
+		_animation_player.play("run_right")
+	elif direction < 0:
+		_animation_player.play("run_left")
+		
+func animate_stand(direction):
+	if direction > 0:
 		_animation_player.play("stand_right")
-	if direction == 0 and last_movement == -1:
-		#_animated_sprite.play("stand_left")
+	elif direction < 0:
 		_animation_player.play("stand_left")
 
+func animate_jump(direction):
+	if direction > 0:
+		_animation_player.play("jump_right")
+
+	elif direction < 0:
+		_animation_player.play("jump_left")
+
+func animate_sit(direction):
+	if direction > 0:
+		_animation_player.play("sit_down_right")
+	elif direction < 0:
+		_animation_player.play("sit_down_left")
+			
+func on_ground(direction, last_movement):
+	var down_pressed = Input.is_action_pressed("ui_down", true)
+	var down_released = Input.is_action_just_released("ui_down", true)
+	
+	if sliding:
+		_animation_player.play("floor_slide_right")
+	
+	if is_playing_by_name("attack"):
+		return #
+	
+	if sitting and is_on_floor():
+		if direction == 0:
+			animate_sit(last_movement)
+		#if !is_playing_by_name("sit_down"):
+			#animate_sit(direction)
+			
+	#elif !sitting and down_released:
+		#_animation_player.play("sit_up_right")
+		#print(_animation_player.current_animation_length)
+		#if(_animation_player.current_animation_length == 0.5):
+			#_animation_player.pause()
+
+	else:
+		if is_on_floor() and direction == 0:
+			animate_stand(last_movement)
+					
+		if is_on_floor() and direction != 0:
+			animate_run(direction)
+
+		
+	
 func is_playing_by_name(animation_type):
-	return _animated_sprite.is_playing() == true and (_animated_sprite.animation.contains(animation_type) or _animation_player.current_animation.contains(animation_type))
+	return _animation_player.is_playing() == true and (_animated_sprite.animation.contains(animation_type) or _animation_player.current_animation.contains(animation_type))

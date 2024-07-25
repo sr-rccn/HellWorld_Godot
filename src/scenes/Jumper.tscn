@@ -35,6 +35,8 @@ scale = Vector2(0.125, 0.125)
 sprite_frames = SubResource("SpriteFrames_inv4h")
 animation = &"new_animation"
 
-[node name="jump_zone" type="CollisionShape2D" parent="."]
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="jump_zone" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, -8)
 shape = SubResource("SegmentShape2D_m3kly")
