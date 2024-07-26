@@ -12,6 +12,9 @@ var last_animation = ""
 
 var has_double_jump = false
 var sliding = false
+var sliding_time = 0
+var sliding_cool_down = 0.5
+
 var jumps = 0
 var jumping = false
 
@@ -52,7 +55,7 @@ func _physics_process(delta):
 
 	save_last_movement(direction)
 	box_collision()
-	print(sliding)
+	print(sliding, sitting, _animation_player.current_animation)
 			
 func idle(direction, last_direction):
 	if direction == 0:
@@ -67,19 +70,10 @@ func on_floor_and_down():
 		
 	if is_on_floor() and button_down_pressed and !sitting:
 		sitting = true
-		
-		if button_jump_just_pressed:
-			sliding = true
-			if last_movement == 1:
-				velocity.x += 1000
-
 				
-			if last_movement == -1:
-				velocity.x += -1000
-				
-	if !button_down_pressed and button_down_released:
+	if !button_down_pressed or button_down_released:
+		sliding = false
 		sitting = false
-			
 			
 
 
@@ -115,9 +109,15 @@ func attack_left(direction, last_movement):
 
 func handle_jump(direction, last_movement):	# Handle jump.
 	var button_down_pressed = Input.is_action_pressed("ui_down", true)
+	var button_down_just_pressed = Input.is_action_just_pressed("ui_down", true)
+	
+	if button_down_pressed and Input.is_action_just_pressed("ui_accept"):
+		sitting = false
+		sliding = true
 
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("ui_accept") and !button_down_pressed:
 		jumping = true
+		
 		jumps = jumps + 1
 		velocity.y = JUMP_VELOCITY
 		if is_on_wall():
@@ -129,7 +129,14 @@ func handle_jump(direction, last_movement):	# Handle jump.
 
 func handle_down():	# Handle jump.
 	var button_down_pressed = Input.is_action_pressed("ui_down", true)
+	var button_jump_just_pressed = Input.is_action_just_pressed("ui_accept", true)
 	
+	#if is_on_floor() and !sliding: velocity.x = 0
+	
+	if button_down_pressed and button_jump_just_pressed:
+		sliding = true
+	
+	print(velocity)
 	if button_down_pressed: 
 		sitting = true
 	else: 
@@ -137,12 +144,18 @@ func handle_down():	# Handle jump.
 	
 			
 func move_character(direction):
-		if direction:
-			velocity.x = (direction * SPEED)
-		else:
-			velocity.x = move_toward(velocity.x, 0, SPEED)
-			
+	var button_down_pressed = Input.is_action_pressed("ui_down", true)
+	
+	if sliding or sitting: 
 		move_and_slide()
+		return #
+
+	if direction:
+		velocity.x = (direction * SPEED)
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+			
+	move_and_slide()
 
 func save_last_movement(direction):
 	#Guarda el último movimiento si fue derecha o izquierda
@@ -171,16 +184,6 @@ func wall_collision():
 			var collision = get_slide_collision(i)
 			var collider = collision.get_collider()
 
-		#if direction == 0:
-			#if is_on_wall() and direction == 0 and last_movement == 1:
-				#_animation_player.play("wall_slide_right")
-			#if is_on_wall() and direction == 0 and last_movement == -1:
-				#_animation_player.play("wall_slide_left")
-		#else:	
-			#if is_on_wall() and direction == 1:
-				#_animation_player.play("wall_slide_right")
-			#if is_on_wall() and direction == -1:
-				#_animation_player.play("wall_slide_left")
 		
 func _on_area_2d_body_entered(body):
 	if body is CharacterBody2D:
@@ -196,6 +199,14 @@ func animate_air(direction):
 
 func on_air(direction, last_movement):
 	if !is_on_floor():
+		if sliding: 
+			animate_sliding(last_movement)
+			if last_movement == 1: velocity.x = 200.0
+			elif last_movement == -1: velocity.x = -200.0
+					
+			await get_tree().create_timer(sliding_cool_down).timeout
+			sliding = false	
+		
 		if !jumping:
 			if direction == 0:
 				animate_air(last_movement)
@@ -227,33 +238,42 @@ func animate_jump(direction):
 		_animation_player.play("jump_left")
 
 func animate_sit(direction):
+	if !sliding:
+		if direction > 0:
+			_animation_player.play("sit_down_right")
+		elif direction < 0:
+			_animation_player.play("sit_down_left")
+
+func animate_sliding(direction):
+	#if !sitting:
 	if direction > 0:
-		_animation_player.play("sit_down_right")
+		_animation_player.play("floor_slide_right")
 	elif direction < 0:
-		_animation_player.play("sit_down_left")
+		_animation_player.play("floor_slide_left")
+			
 			
 func on_ground(direction, last_movement):
 	var down_pressed = Input.is_action_pressed("ui_down", true)
 	var down_released = Input.is_action_just_released("ui_down", true)
-	
-	if sliding:
-		_animation_player.play("floor_slide_right")
-	
-	if is_playing_by_name("attack"):
+
+	if !sliding: velocity.x = 0
+
+	if is_playing_by_name("attack"): #importante
 		return #
-	
+		
+	# Sliding
+	if sliding and is_on_floor():
+		animate_sliding(last_movement)
+		if last_movement == 1: velocity.x = 200.0
+		elif last_movement == -1: velocity.x = -200.0
+			
+		await get_tree().create_timer(sliding_cool_down).timeout
+		sliding = false	
+			
+	# Sitting
 	if sitting and is_on_floor():
 		if direction == 0:
 			animate_sit(last_movement)
-		#if !is_playing_by_name("sit_down"):
-			#animate_sit(direction)
-			
-	#elif !sitting and down_released:
-		#_animation_player.play("sit_up_right")
-		#print(_animation_player.current_animation_length)
-		#if(_animation_player.current_animation_length == 0.5):
-			#_animation_player.pause()
-
 	else:
 		if is_on_floor() and direction == 0:
 			animate_stand(last_movement)
