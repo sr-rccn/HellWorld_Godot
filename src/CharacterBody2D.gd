@@ -10,12 +10,13 @@ const FLOOR_NORMAL = Vector2.UP
 var last_movement = 0
 var last_animation = ""
 
-var has_double_jump = false
+
 var sliding = false
 var sliding_time = 0
 var sliding_cool_down = 0.5
 
-var jumps = 0
+var jumps = 2
+var have_double_jump = true
 var jumping = false
 
 var sitting = false
@@ -55,7 +56,6 @@ func _physics_process(delta):
 
 	save_last_movement(direction)
 	box_collision()
-	print(sliding, sitting, _animation_player.current_animation)
 			
 func idle(direction, last_direction):
 	if direction == 0:
@@ -108,22 +108,40 @@ func attack_left(direction, last_movement):
 				#_animated_spritex("stand_left")
 
 func handle_jump(direction, last_movement):	# Handle jump.
+	var button_jump_pressed = Input.is_action_just_pressed("ui_accept") 
+	
 	var button_down_pressed = Input.is_action_pressed("ui_down", true)
 	var button_down_just_pressed = Input.is_action_just_pressed("ui_down", true)
+	
+	var button_left_pressed = Input.is_action_pressed("ui_left", true)
+	var button_right_pressed = Input.is_action_pressed("ui_right", true)
+
+	if is_on_floor():
+		jumps = 2
+		have_double_jump = true
+		
+	if !is_on_floor() and jumps == 2:
+		jumps = jumps - 1
+		
+	print(jumps, " - ", have_double_jump)
+
+	if is_on_wall(): 
+		jumps = 1
+		
 	
 	if button_down_pressed and Input.is_action_just_pressed("ui_accept"):
 		sitting = false
 		sliding = true
 
-	if Input.is_action_just_pressed("ui_accept") and !button_down_pressed:
+	if button_jump_pressed and !button_down_pressed and jumps > 0:
 		jumping = true
-		
-		jumps = jumps + 1
+		jumps = jumps - 1
 		velocity.y = JUMP_VELOCITY
-		if is_on_wall():
-			jumps = jumps + 2
-		has_double_jump = true
-		
+		#if have_double_jump:
+			#jumps = jumps - 1
+			#velocity.y = JUMP_VELOCITY
+			#have_double_jump = false
+		#
 	if is_playing_by_name("jump"): jumping = true
 	else: jumping = false
 
@@ -136,7 +154,6 @@ func handle_down():	# Handle jump.
 	if button_down_pressed and button_jump_just_pressed:
 		sliding = true
 	
-	print(velocity)
 	if button_down_pressed: 
 		sitting = true
 	else: 
@@ -198,9 +215,19 @@ func animate_air(direction):
 		_animation_player.play("falling_down_left")
 
 func on_air(direction, last_movement):
-	if !is_on_floor():
+	print(is_on_wall())
+	print(direction)
+	if is_on_wall():
+		if direction == 1:
+			_animation_player.play("wall_slide_right")
+		if direction == -1:
+			_animation_player.play("wall_slide_left")	
+		return #
+		
+	if !is_on_floor() and !is_on_wall_only():
 		if sliding: 
 			animate_sliding(last_movement)
+			#velocity.y = 0
 			if last_movement == 1: velocity.x = 200.0
 			elif last_movement == -1: velocity.x = -200.0
 					
