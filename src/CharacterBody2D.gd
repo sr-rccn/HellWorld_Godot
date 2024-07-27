@@ -33,7 +33,7 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
 
-	print(attacks, "+", _animation_player.current_animation)
+	print(attacks, "+", _animation_player.current_animation,"+", last_movement)
 
 	move_character(direction)
 	on_air(direction)
@@ -68,7 +68,7 @@ func attack_right(direction):
 		if last_movement == 1 and direction == 0 and is_on_floor():
 			attacks = attacks + 1
 			animate_attack(last_movement, attacks)
-			if attacks == 2: attacks = 0
+			if attacks == 3: attacks = 0
 			
 			#move boxes
 			var overlapping = $AnimatedSprite2D/Sword.get_overlapping_bodies()
@@ -84,7 +84,7 @@ func attack_left(direction):
 		if last_movement == -1 and direction == 0 and is_on_floor():
 			attacks = attacks + 1
 			animate_attack(last_movement, attacks)
-			if attacks == 2: attacks = 0
+			if attacks == 3: attacks = 0
 			
 			var overlapping = $AnimatedSprite2D/Sword.get_overlapping_bodies()
 			for rigid_body in overlapping:
@@ -153,6 +153,7 @@ func move_character(direction):
 
 func save_last_movement(direction):
 	#Guarda el último movimiento si fue derecha o izquierda
+	last_animation = _animation_player.current_animation
 	if(direction != 0):
 		last_movement = direction		
 
@@ -233,7 +234,7 @@ func animate_jump(direction):
 		_animation_player.play("jump_left")
 
 func animate_sit(direction):
-	if !sliding:
+	if !sliding and !last_animation.contains("sit_down") and !is_playing_by_name("sit_down"):
 		if direction > 0:
 			_animation_player.play("sit_down_right")
 		elif direction < 0:
