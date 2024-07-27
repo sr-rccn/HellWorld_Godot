@@ -36,14 +36,14 @@ func _physics_process(delta):
 	print(attacks, "+", _animation_player.current_animation)
 
 	move_character(direction)
-	on_air(direction, last_movement)
-	on_ground(direction, last_movement)
+	on_air(direction)
+	on_ground(direction)
 	wall_collision()
-	handle_jump(direction, last_movement)
+	handle_jump()
 	handle_down()
 	on_floor_and_down()
-	attack_left(direction, last_movement)
-	attack_right(direction, last_movement)
+	attack_left(direction)
+	attack_right(direction)
 	save_last_movement(direction)
 	box_collision()
 			
@@ -54,7 +54,6 @@ func idle(direction, last_direction):
 func on_floor_and_down():
 	var button_down_pressed = Input.is_action_pressed("ui_down", true)
 	var button_down_released = Input.is_action_just_released("ui_down", true)
-	var button_jump_just_pressed = Input.is_action_just_pressed("ui_accept")
 		
 	if is_on_floor() and button_down_pressed and !sitting:
 		sitting = true
@@ -63,7 +62,7 @@ func on_floor_and_down():
 		sliding = false
 		sitting = false
 
-func attack_right(direction, last_movement):
+func attack_right(direction):
 	#Mover y saltar a la derecha
 	if Input.is_action_just_pressed("ui_attack"):
 		if last_movement == 1 and direction == 0 and is_on_floor():
@@ -79,7 +78,7 @@ func attack_right(direction, last_movement):
 						rigid_body.queue_free()
 					rigid_body.apply_central_impulse(Vector2(90, 0))
 
-func attack_left(direction, last_movement):
+func attack_left(direction):
 	#Mover y saltar a la izquierda
 	if Input.is_action_just_pressed("ui_attack"):
 		if last_movement == -1 and direction == 0 and is_on_floor():
@@ -94,14 +93,11 @@ func attack_left(direction, last_movement):
 						rigid_body.queue_free()
 					rigid_body.apply_central_impulse(Vector2(-90, 0))
 
-func handle_jump(direction, last_movement):	# Handle jump.
+func handle_jump():	# Handle jump.
 	var button_jump_pressed = Input.is_action_just_pressed("ui_accept") 
 	
 	var button_down_pressed = Input.is_action_pressed("ui_down", true)
-	var button_down_just_pressed = Input.is_action_just_pressed("ui_down", true)
-	
-	var button_left_pressed = Input.is_action_pressed("ui_left", true)
-	var button_right_pressed = Input.is_action_pressed("ui_right", true)
+
 
 	if is_on_floor():
 		jumps = 2
@@ -138,7 +134,7 @@ func handle_down():	# Handle jump.
 	
 			
 func move_character(direction):
-	var button_down_pressed = Input.is_action_pressed("ui_down", true)
+
 	
 	if sliding or sitting: 
 		move_and_slide()
@@ -188,7 +184,7 @@ func animate_air(direction):
 	elif direction < 0:
 		_animation_player.play("falling_down_left")
 
-func on_air(direction, last_movement):
+func on_air(direction):
 	
 	if is_playing_by_name("sit"): return #
 	
@@ -250,20 +246,18 @@ func animate_sliding(direction):
 		_animation_player.play("floor_slide_left")
 		
 func animate_attack(direction, attack_number):
-	var attack_right = "attack_right_" + str(attack_number)
-	var attack_left = "attack_left_" + str(attack_number)
+	var attack_right_animation = "attack_right_" + str(attack_number)
+	var attack_left_left = "attack_left_" + str(attack_number)
 	
 	if direction > 0:
-		_animation_player.play(attack_right)
+		_animation_player.play(attack_right_animation)
 			
 	elif direction < 0:
-		_animation_player.play(attack_left)
+		_animation_player.play(attack_left_left)
 
 			
 
-func on_ground(direction, last_movement):
-
-	var down_pressed = Input.is_action_pressed("ui_down", true)
+func on_ground(direction):
 	if !sliding: velocity.x = 0
 	
 	if not is_playing_by_name("attack"): attacks = 0
