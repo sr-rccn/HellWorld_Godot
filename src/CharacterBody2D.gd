@@ -33,8 +33,6 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
 
-	print(attacks, "+", _animation_player.current_animation,"+", last_movement)
-
 	move_character(direction)
 	on_air(direction)
 	on_ground(direction)
@@ -46,6 +44,8 @@ func _physics_process(delta):
 	attack_right(direction)
 	save_last_movement(direction)
 	box_collision()
+			
+			
 			
 func idle(direction, last_direction):
 	if direction == 0:
@@ -63,7 +63,7 @@ func on_floor_and_down():
 		sitting = false
 
 func attack_right(direction):
-	#Mover y saltar a la derecha
+	#Mover y saltar a la derecha	
 	if Input.is_action_just_pressed("ui_attack"):
 		if last_movement == 1 and direction == 0 and is_on_floor():
 			attacks = attacks + 1
@@ -71,12 +71,8 @@ func attack_right(direction):
 			if attacks == 3: attacks = 0
 			
 			#move boxes
-			var overlapping = $AnimatedSprite2D/Sword.get_overlapping_bodies()
-			for rigid_body in overlapping:
-				if rigid_body is RigidBody2D:
-					if rigid_body.name.contains("Dummy"): 
-						rigid_body.queue_free()
-					rigid_body.apply_central_impulse(Vector2(90, 0))
+	
+			
 
 func attack_left(direction):
 	#Mover y saltar a la izquierda
@@ -85,13 +81,6 @@ func attack_left(direction):
 			attacks = attacks + 1
 			animate_attack(last_movement, attacks)
 			if attacks == 3: attacks = 0
-			
-			var overlapping = $AnimatedSprite2D/Sword.get_overlapping_bodies()
-			for rigid_body in overlapping:
-				if rigid_body is RigidBody2D:
-					if rigid_body.name.contains("Dummy"): 
-						rigid_body.queue_free()
-					rigid_body.apply_central_impulse(Vector2(-90, 0))
 
 func handle_jump():	# Handle jump.
 	var button_jump_pressed = Input.is_action_just_pressed("ui_accept") 
@@ -133,9 +122,7 @@ func handle_down():	# Handle jump.
 		sitting = false
 	
 			
-func move_character(direction):
-
-	
+func move_character(direction):	
 	if sliding or sitting: 
 		move_and_slide()
 		return #
@@ -260,6 +247,31 @@ func animate_attack(direction, attack_number):
 
 func on_ground(direction):
 	if !sliding: velocity.x = 0
+	
+	if is_playing_by_name("attack"):
+		var overlapping = $AnimatedSprite2D/Sword.get_overlapping_bodies()
+		print($AnimatedSprite2D/Sword.get_overlapping_areas(),"areas")
+		print($AnimatedSprite2D/Sword.get_overlapping_bodies(),"bodies")
+		var enemy_layer_collision = $AnimatedSprite2D/Sword.get_collision_mask_value(7)
+		
+		#print(overlapping)
+		for body in overlapping:
+			print(body.name)
+			if body.name == "Rat":
+				var health = body.get_tree().get_root().get_node("Game/Rat").get("health")
+				print(body.get_tree().get_root().get_node("Game/Rat").get("health"))
+				var demaged_health = int(health) - 1
+				if(_animation_player.current_animation_length > 0.4):
+					body.get_tree().get_root().get_node("Game/Rat").set("health", demaged_health)
+				print(body.get_tree().get_root().get_node("Game/Rat").get("health"))
+
+			if body.name.contains("Dummy"): 
+				body.queue_free()
+			var impulse = 0
+			if last_movement == 1: impulse = 60
+			if last_movement == -1: impulse = -60		
+			
+			if body is RigidBody2D: body.apply_central_impulse(Vector2(impulse, 0))
 	
 	if not is_playing_by_name("attack"): attacks = 0
 

@@ -51,3 +51,4 @@ ui_attack={
 2d_physics/layer_4="weapon"
 2d_physics/layer_5="death"
 2d_physics/layer_6="wall"
+2d_physics/layer_7="enemy"

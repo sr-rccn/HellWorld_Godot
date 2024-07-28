@@ -1,5 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://cru7ynmjnlo28"]
+[gd_scene load_steps=11 format=3 uid="uid://cru7ynmjnlo28"]
 
+[ext_resource type="PackedScene" uid="uid://cmcrm87r0b5ty" path="res://src/scenes/Rat.tscn" id="1_rew1t"]
 [ext_resource type="Texture2D" uid="uid://clnsf5nyj4lc1" path="res://src/assets/oak_woods_tileset.png" id="1_uxygl"]
 [ext_resource type="PackedScene" uid="uid://c8r5a35ijvgo" path="res://src/scenes/Jumper.tscn" id="1_xu71j"]
 [ext_resource type="PackedScene" uid="uid://c2wxj4onmk2gx" path="res://src/scenes/Dummy.tscn" id="2_gtntp"]
@@ -1402,6 +1403,9 @@ size = Vector2(2418, 20)
 [node name="Game" type="Node2D"]
 position = Vector2(-32, -56)
 
+[node name="Rat" parent="." instance=ExtResource("1_rew1t")]
+position = Vector2(-240, 192)
+
 [node name="Jumper6" parent="." instance=ExtResource("1_xu71j")]
 position = Vector2(464, 8)
 
@@ -1428,7 +1432,7 @@ position = Vector2(-200, 200)
 position = Vector2(104, -24)
 
 [node name="Kara" parent="." instance=ExtResource("3_ml154")]
-position = Vector2(-304, 168)
+position = Vector2(-336, 192)
 
 [node name="Camera2D" type="Camera2D" parent="Kara"]
 zoom = Vector2(5, 5)
@@ -1454,7 +1458,7 @@ texture = ExtResource("7_vydi1")
 
 [node name="Background3" type="Sprite2D" parent="Background"]
 z_index = -5
-position = Vector2(446.974, 430.968)
+position = Vector2(378.864, 401.749)
 rotation = 3.14159
 scale = Vector2(2.0135, 1)
 texture = ExtResource("7_vydi1")
