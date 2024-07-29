@@ -45,8 +45,6 @@ func _physics_process(delta):
 	save_last_movement(direction)
 	box_collision()
 			
-			
-			
 func idle(direction, last_direction):
 	if direction == 0:
 		animate_stand(last_direction)
@@ -70,9 +68,6 @@ func attack_right(direction):
 			animate_attack(last_movement, attacks)
 			if attacks == 3: attacks = 0
 			
-			#move boxes
-	
-			
 
 func attack_left(direction):
 	#Mover y saltar a la izquierda
@@ -84,7 +79,6 @@ func attack_left(direction):
 
 func handle_jump():	# Handle jump.
 	var button_jump_pressed = Input.is_action_just_pressed("ui_accept") 
-	
 	var button_down_pressed = Input.is_action_pressed("ui_down", true)
 
 
@@ -250,20 +244,18 @@ func on_ground(direction):
 	
 	if is_playing_by_name("attack"):
 		var overlapping = $AnimatedSprite2D/Sword.get_overlapping_bodies()
-		print($AnimatedSprite2D/Sword.get_overlapping_areas(),"areas")
-		print($AnimatedSprite2D/Sword.get_overlapping_bodies(),"bodies")
 		var enemy_layer_collision = $AnimatedSprite2D/Sword.get_collision_mask_value(7)
 		
 		#print(overlapping)
 		for body in overlapping:
-			print(body.name)
 			if body.name == "Rat":
 				var health = body.get_tree().get_root().get_node("Game/Rat").get("health")
-				print(body.get_tree().get_root().get_node("Game/Rat").get("health"))
-				var demaged_health = int(health) - 1
-				if(_animation_player.current_animation_length > 0.4):
-					body.get_tree().get_root().get_node("Game/Rat").set("health", demaged_health)
-				print(body.get_tree().get_root().get_node("Game/Rat").get("health"))
+				body.get_tree().get_root().get_node("Game/Rat").set("damage_cooldown", true)
+				var damaged_health = int(health) + 1
+				body.get_tree().get_root().get_node("Game/Rat").set("damage_cooldown", false)
+				
+				body.get_tree().get_root().get_node("Game/Rat").set("health", damaged_health)
+				print(body.get_tree().get_root().get_node("Game/Rat").get("damage_cooldown"))
 
 			if body.name.contains("Dummy"): 
 				body.queue_free()
