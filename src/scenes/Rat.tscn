@@ -432,10 +432,10 @@ tracks/0/path = NodePath("AnimatedSprite2D:animation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [&"idle"]
+"values": [&"idle", &"idle"]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -509,10 +509,10 @@ tracks/0/path = NodePath("AnimatedSprite2D:animation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [&"run"]
+"values": [&"run", &"run"]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -574,10 +574,10 @@ tracks/0/path = NodePath("AnimatedSprite2D:animation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [&"run"]
+"values": [&"run", &"run"]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -681,16 +681,6 @@ blend_mode = 1
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sliyh"]
 advance_mode = 2
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gqiw8"]
-reset = false
-advance_mode = 2
-advance_condition = &"is_running"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5qy5n"]
-reset = false
-advance_mode = 2
-advance_condition = &"idle"
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_033q1"]
 reset = false
 advance_condition = &"attack"
@@ -701,6 +691,12 @@ reset = false
 switch_mode = 2
 advance_mode = 2
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5qy5n"]
+advance_condition = &"idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gqiw8"]
+advance_condition = &"is_running"
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_5psy7"]
 states/End/position = Vector2(673, 71.9688)
 states/Start/position = Vector2(128.5, 64.7969)
@@ -710,7 +706,7 @@ states/idle/node = SubResource("AnimationNodeBlendSpace1D_4t052")
 states/idle/position = Vector2(314.25, 66.1562)
 states/run/node = SubResource("AnimationNodeBlendSpace1D_srmuw")
 states/run/position = Vector2(312.969, 201.047)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_sliyh"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_gqiw8"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_5qy5n"), "idle", "attack", SubResource("AnimationNodeStateMachineTransition_033q1"), "attack", "idle", SubResource("AnimationNodeStateMachineTransition_3x4v4")]
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_sliyh"), "idle", "attack", SubResource("AnimationNodeStateMachineTransition_033q1"), "attack", "idle", SubResource("AnimationNodeStateMachineTransition_3x4v4"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_5qy5n"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_gqiw8")]
 graph_offset = Vector2(8.5546, -1.28427)
 
 [sub_resource type="LabelSettings" id="LabelSettings_lcqen"]
@@ -727,7 +723,7 @@ position = Vector2(2.08165e-12, -9.5)
 scale = Vector2(1, 0.9)
 sprite_frames = SubResource("SpriteFrames_48uti")
 animation = &"idle"
-frame = 2
+frame = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_gnf1s")
