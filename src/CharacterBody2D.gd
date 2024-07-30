@@ -1,50 +1,40 @@
 extends CharacterBody2D
 @onready var _animated_sprite = $AnimatedSprite2D
 @onready var _animation_player = $AnimatedSprite2D/AnimationPlayer
-#@onready var _sword_shape = $AnimatedSprite2D/Sword/CollisionShape2D
-#@onready var jumper = $"../Jumper/CollisionShape2D"
 	
 const SPEED = 150.0
 const JUMP_VELOCITY = -200.0
 const FLOOR_NORMAL = Vector2.UP
 var last_movement = 0
 var last_animation = ""
-
 var attacks = 0
-
 var sliding = false
-var sliding_time = 0
 var sliding_cool_down = 0.5
-
 var jumps = 2
 var have_double_jump = true
 var jumping = false
-
 var sitting = false
-# Get the gravity from the project settings to be synced with RigidBody nodes.
-#var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var gravity = 800
 
 
 func _physics_process(delta):
 	var direction = Input.get_axis("ui_left", "ui_right")
 
-	# Add the gravity.
-	if not is_on_floor():
-		velocity.y += gravity * delta
-
+	add_gravity(delta)
 	move_character(direction)
 	on_air(direction)
 	on_ground(direction)
-	wall_collision()
 	handle_jump()
 	handle_down()
 	on_floor_and_down()
-	attack_left(direction)
-	attack_right(direction)
+	attack(direction)
 	save_last_movement(direction)
 	box_collision()
 			
+func add_gravity(delta):
+	if not is_on_floor():
+		velocity.y += gravity * delta
+		
 func idle(direction, last_direction):
 	if direction == 0:
 		animate_stand(last_direction)
@@ -59,23 +49,6 @@ func on_floor_and_down():
 	if !button_down_pressed or button_down_released:
 		sliding = false
 		sitting = false
-
-func attack_right(direction):
-	#Mover y saltar a la derecha	
-	if Input.is_action_just_pressed("ui_attack"):
-		if last_movement == 1 and direction == 0 and is_on_floor():
-			attacks = attacks + 1
-			animate_attack(last_movement, attacks)
-			if attacks == 3: attacks = 0
-			
-
-func attack_left(direction):
-	#Mover y saltar a la izquierda
-	if Input.is_action_just_pressed("ui_attack"):
-		if last_movement == -1 and direction == 0 and is_on_floor():
-			attacks = attacks + 1
-			animate_attack(last_movement, attacks)
-			if attacks == 3: attacks = 0
 
 func handle_jump():	# Handle jump.
 	var button_jump_pressed = Input.is_action_just_pressed("ui_accept") 
@@ -148,14 +121,6 @@ func box_collision():
 			$SlidingCollision.disabled = true
 			if collider.name.contains("Jumper"): velocity.y = JUMP_VELOCITY * 2
 			
-func wall_collision():
-	if is_on_wall() and !is_on_floor():
-		velocity = velocity / 3
-		for i in get_slide_collision_count():
-			var collision = get_slide_collision(i)
-			var collider = collision.get_collider()
-
-		
 func _on_area_2d_body_entered(body):
 	if body is CharacterBody2D:
 		body.get_tree().call_deferred("reload_current_scene")
@@ -237,25 +202,26 @@ func animate_attack(direction, attack_number):
 	elif direction < 0:
 		_animation_player.play(attack_left_left)
 
-			
+func attack(direction):
+	if Input.is_action_just_pressed("ui_attack"):
+	#Mover y saltar a la derecha	
+		if direction == 0 and is_on_floor():
+			attacks = attacks + 1
+			animate_attack(last_movement, attacks)
+			if attacks == 3: attacks = 0
+
 
 func on_ground(direction):
 	if !sliding: velocity.x = 0
 	
 	if is_playing_by_name("attack"):
 		var overlapping = $AnimatedSprite2D/Sword.get_overlapping_bodies()
-		var enemy_layer_collision = $AnimatedSprite2D/Sword.get_collision_mask_value(7)
-		
 		#print(overlapping)
 		for body in overlapping:
 			if body.name == "Rat":
 				var health = body.get_tree().get_root().get_node("Game/Rat").get("health")
-				body.get_tree().get_root().get_node("Game/Rat").set("damage_cooldown", true)
-				var damaged_health = int(health) + 1
-				body.get_tree().get_root().get_node("Game/Rat").set("damage_cooldown", false)
-				
+				var damaged_health = int(health) - 1
 				body.get_tree().get_root().get_node("Game/Rat").set("health", damaged_health)
-				print(body.get_tree().get_root().get_node("Game/Rat").get("damage_cooldown"))
 
 			if body.name.contains("Dummy"): 
 				body.queue_free()
