@@ -1,15 +1,15 @@
 [gd_scene load_steps=11 format=3 uid="uid://cru7ynmjnlo28"]
 
-[ext_resource type="PackedScene" uid="uid://cmcrm87r0b5ty" path="res://src/scenes/Rat.tscn" id="1_rew1t"]
-[ext_resource type="Texture2D" uid="uid://clnsf5nyj4lc1" path="res://src/assets/oak_woods_tileset.png" id="1_uxygl"]
-[ext_resource type="PackedScene" uid="uid://c8r5a35ijvgo" path="res://src/scenes/Jumper.tscn" id="1_xu71j"]
-[ext_resource type="PackedScene" uid="uid://c2wxj4onmk2gx" path="res://src/scenes/Dummy.tscn" id="2_gtntp"]
-[ext_resource type="PackedScene" uid="uid://cs2e0srrlt42w" path="res://src/scenes/Kara.tscn" id="3_ml154"]
-[ext_resource type="PackedScene" uid="uid://cw0gxr5k7kvar" path="res://src/scenes/Box.tscn" id="6_havcc"]
-[ext_resource type="Texture2D" uid="uid://c25tq86bakhn8" path="res://src/assets/Background.png" id="7_vydi1"]
+[ext_resource type="PackedScene" uid="uid://cmcrm87r0b5ty" path="res://src/scenes/enemies/Rat.tscn" id="1_bov8d"]
+[ext_resource type="PackedScene" uid="uid://c8r5a35ijvgo" path="res://src/scenes/objects/Jumper.tscn" id="2_21ncd"]
+[ext_resource type="PackedScene" uid="uid://cw0gxr5k7kvar" path="res://src/scenes/objects/Box.tscn" id="3_gcywf"]
+[ext_resource type="PackedScene" uid="uid://cs2e0srrlt42w" path="res://src/scenes/characters/Kara.tscn" id="4_0q4ps"]
+[ext_resource type="PackedScene" uid="uid://c2wxj4onmk2gx" path="res://src/scenes/objects/Dummy.tscn" id="5_y7r03"]
+[ext_resource type="Texture2D" uid="uid://clnsf5nyj4lc1" path="res://src/assets/oak_woods_tileset.png" id="6_vrnoi"]
+[ext_resource type="Texture2D" uid="uid://c25tq86bakhn8" path="res://src/assets/Background.png" id="7_jngka"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qdh6w"]
-texture = ExtResource("1_uxygl")
+texture = ExtResource("6_vrnoi")
 0:0/0 = 0
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:0/0/physics_layer_0/angular_velocity = 0.0
@@ -1403,44 +1403,44 @@ size = Vector2(2418, 20)
 [node name="Game" type="Node2D"]
 position = Vector2(-32, -56)
 
-[node name="Rat" parent="." instance=ExtResource("1_rew1t")]
+[node name="Rat" parent="." instance=ExtResource("1_bov8d")]
 position = Vector2(-200, 192)
 
-[node name="Jumper6" parent="." instance=ExtResource("1_xu71j")]
+[node name="Jumper6" parent="." instance=ExtResource("2_21ncd")]
 position = Vector2(464, 8)
 
-[node name="Jumper5" parent="." instance=ExtResource("1_xu71j")]
+[node name="Jumper5" parent="." instance=ExtResource("2_21ncd")]
 position = Vector2(-384, 200)
 
-[node name="Jumper4" parent="." instance=ExtResource("1_xu71j")]
+[node name="Jumper4" parent="." instance=ExtResource("2_21ncd")]
 position = Vector2(384, 200)
 rotation = -3.14159
 
-[node name="Jumper3" parent="." instance=ExtResource("1_xu71j")]
+[node name="Jumper3" parent="." instance=ExtResource("2_21ncd")]
 position = Vector2(464, 200)
 
-[node name="Box" parent="." instance=ExtResource("6_havcc")]
+[node name="Box" parent="." instance=ExtResource("3_gcywf")]
 position = Vector2(-368, 200)
 
-[node name="Box3" parent="." instance=ExtResource("6_havcc")]
+[node name="Box3" parent="." instance=ExtResource("3_gcywf")]
 position = Vector2(-80, 200)
 
-[node name="Box2" parent="." instance=ExtResource("6_havcc")]
+[node name="Box2" parent="." instance=ExtResource("3_gcywf")]
 position = Vector2(-56, 96)
 
-[node name="Jumper2" parent="." instance=ExtResource("1_xu71j")]
+[node name="Jumper2" parent="." instance=ExtResource("2_21ncd")]
 position = Vector2(104, -24)
 
-[node name="Kara" parent="." instance=ExtResource("3_ml154")]
+[node name="Kara" parent="." instance=ExtResource("4_0q4ps")]
 position = Vector2(-336, 192)
 
 [node name="Camera2D" type="Camera2D" parent="Kara"]
 zoom = Vector2(5, 5)
 
-[node name="Jumper" parent="." instance=ExtResource("1_xu71j")]
+[node name="Jumper" parent="." instance=ExtResource("2_21ncd")]
 position = Vector2(112, 200)
 
-[node name="Dummy" parent="." instance=ExtResource("2_gtntp")]
+[node name="Dummy" parent="." instance=ExtResource("5_y7r03")]
 position = Vector2(-176, 56)
 collision_mask = 5
 
@@ -1455,19 +1455,19 @@ visible = false
 z_index = -5
 position = Vector2(-54.0007, -152)
 scale = Vector2(1.40948, 1.09521)
-texture = ExtResource("7_vydi1")
+texture = ExtResource("7_jngka")
 
 [node name="Background3" type="Sprite2D" parent="Background"]
 z_index = -5
 position = Vector2(378.864, 401.749)
 rotation = 3.14159
 scale = Vector2(2.0135, 1)
-texture = ExtResource("7_vydi1")
+texture = ExtResource("7_jngka")
 
 [node name="Background2" type="Sprite2D" parent="Background"]
 z_index = -5
 position = Vector2(929.421, 5.24521e-06)
-texture = ExtResource("7_vydi1")
+texture = ExtResource("7_jngka")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 visible = false
