@@ -1,7 +1,9 @@
 extends CharacterBody2D
-@onready var _animated_sprite = $AnimatedSprite2D
-@onready var _animation_player = $AnimatedSprite2D/AnimationPlayer
-	
+
+
+@onready var _animation_tree = $AnimationTree
+@onready var _state_machine = $AnimationTree.get("parameters/playback")
+
 const SPEED = 150.0
 const JUMP_VELOCITY = -200.0
 const FLOOR_NORMAL = Vector2.UP
@@ -22,7 +24,7 @@ func _physics_process(delta):
 
 	add_gravity(delta)
 	move_character(direction)
-	on_air(direction)
+	on_air()
 	on_ground(direction)
 	handle_jump()
 	handle_down()
@@ -35,9 +37,6 @@ func add_gravity(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
 		
-func idle(direction, last_direction):
-	if direction == 0:
-		animate_stand(last_direction)
 
 func on_floor_and_down():
 	var button_down_pressed = Input.is_action_pressed("ui_down", true)
@@ -54,17 +53,13 @@ func handle_jump():	# Handle jump.
 	var button_jump_pressed = Input.is_action_just_pressed("ui_accept") 
 	var button_down_pressed = Input.is_action_pressed("ui_down", true)
 
-
 	if is_on_floor():
 		jumps = 2
 		have_double_jump = true
-		
 	if !is_on_floor() and jumps == 2:
 		jumps = jumps - 1
-
 	if is_on_wall(): 
 		jumps = 1
-		
 	
 	if button_down_pressed and Input.is_action_just_pressed("ui_accept"):
 		sitting = false
@@ -107,7 +102,7 @@ func move_character(direction):
 
 func save_last_movement(direction):
 	#Guarda el último movimiento si fue derecha o izquierda
-	last_animation = _animation_player.current_animation
+	last_animation = _state_machine.get_current_node()
 	if(direction != 0):
 		last_movement = direction		
 
@@ -125,93 +120,54 @@ func _on_area_2d_body_entered(body):
 	if body is CharacterBody2D:
 		body.get_tree().call_deferred("reload_current_scene")
 
-func animate_air(direction):		
-	if direction > 0:
-		_animation_player.play("falling_down_right")
-	elif direction < 0:
-		_animation_player.play("falling_down_left")
-
-func on_air(direction):
-	
+func on_air():
+	_animation_tree.set("parameters/jump/blend_position", last_movement)
 	if is_playing_by_name("sit"): return #
-	
 	if is_on_wall():
-		if direction == 1:
-			_animation_player.play("wall_slide_right")
-		if direction == -1:
-			_animation_player.play("wall_slide_left")	
+		_state_machine.travel("wall_slide")
 		return #
-		
-	if !is_on_floor() and !jumping:
-		animate_air(last_movement)
+	
+	#if !is_on_floor() and !jumping:
+		#_state_machine.travel("")
+		#animate_air(last_movement)
 	
 	if !is_on_floor() and !is_on_wall_only():
 		if sliding: 
-			animate_sliding(last_movement)
+			_state_machine.travel("floor_slide")
 			#velocity.y = 0
 			if last_movement == 1: velocity.x = 200.0
 			elif last_movement == -1: velocity.x = -200.0
 					
 			await get_tree().create_timer(sliding_cool_down).timeout
 			sliding = false	
+		_state_machine.travel("jump")
 
-		if direction == 0 and jumping:
-			animate_jump(last_movement)
-		else:
-			animate_jump(direction)
-	
-func animate_run(direction):
-	if direction > 0:
-		_animation_player.play("run_right")
-	elif direction < 0:
-		_animation_player.play("run_left")
-		
-func animate_stand(direction):
-	if direction > 0:
-		_animation_player.play("stand_right")
-	elif direction < 0:
-		_animation_player.play("stand_left")
-
-func animate_jump(direction):
-	if direction > 0:
-		_animation_player.play("jump_right")
-
-	elif direction < 0:
-		_animation_player.play("jump_left")
-
-func animate_sit(direction):
-	if !sliding and !last_animation.contains("sit_down") and !is_playing_by_name("sit_down"):
-		if direction > 0:
-			_animation_player.play("sit_down_right")
-		elif direction < 0:
-			_animation_player.play("sit_down_left")
-
-func animate_sliding(direction):
-	if direction > 0:
-		_animation_player.play("floor_slide_right")
-	elif direction < 0:
-		_animation_player.play("floor_slide_left")
-		
-func animate_attack(direction, attack_number):
-	var attack_right_animation = "attack_right_" + str(attack_number)
-	var attack_left_left = "attack_left_" + str(attack_number)
-	
-	if direction > 0:
-		_animation_player.play(attack_right_animation)
-			
-	elif direction < 0:
-		_animation_player.play(attack_left_left)
 
 func attack(direction):
 	if Input.is_action_just_pressed("ui_attack"):
 	#Mover y saltar a la derecha	
 		if direction == 0 and is_on_floor():
 			attacks = attacks + 1
-			animate_attack(last_movement, attacks)
+			var animation_name = "attack_" + str(attacks)
+			_state_machine.travel(animation_name)
 			if attacks == 3: attacks = 0
 
 
 func on_ground(direction):
+	_animation_tree.set("parameters/idle/blend_position", last_movement)
+	_animation_tree.set("parameters/crounch/blend_position", last_movement)
+	_animation_tree.set("parameters/stand_up/blend_position", last_movement)
+	_animation_tree.set("parameters/floor_slide/blend_position", last_movement)	
+	
+	_animation_tree.set("parameters/run/blend_position", direction)
+	_animation_tree.set("parameters/wall_slide/blend_position", direction)
+	_animation_tree.set("parameters/jump/blend_position", last_movement)
+
+	
+	_animation_tree.set("parameters/attack_1/blend_position", last_movement)
+	_animation_tree.set("parameters/attack_2/blend_position", last_movement)
+	_animation_tree.set("parameters/attack_3/blend_position", last_movement)
+	print(_state_machine.get_current_node())
 	if !sliding: velocity.x = 0
 	
 	if is_playing_by_name("attack"):
@@ -238,7 +194,7 @@ func on_ground(direction):
 
 	# Sliding
 	if sliding and is_on_floor():
-		animate_sliding(last_movement)
+		_state_machine.travel("floor_slide")
 		if last_movement == 1: velocity.x = 200.0
 		elif last_movement == -1: velocity.x = -200.0
 
@@ -248,13 +204,13 @@ func on_ground(direction):
 	# Sitting
 	if sitting and is_on_floor():
 		if direction == 0:
-			animate_sit(last_movement)
+			_state_machine.travel("crounch")
 	else:
-		if is_on_floor() and direction == 0 and !sitting:
-			animate_stand(last_movement)
-					
+		if is_on_floor() and direction == 0 and !sitting and !is_playing_by_name("idle"):
+			_state_machine.travel("idle")
 		if is_on_floor() and direction != 0:
-			animate_run(direction)
+			_state_machine.travel("run")
 
 func is_playing_by_name(animation_type):
-	return _animation_player.is_playing() == true and (_animated_sprite.animation.contains(animation_type) or _animation_player.current_animation.contains(animation_type))
+	#print (_state_machine.get_current_node())
+	return _state_machine.get_current_node().contains(animation_type)

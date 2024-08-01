@@ -52,3 +52,7 @@ ui_attack={
 2d_physics/layer_5="death"
 2d_physics/layer_6="wall"
 2d_physics/layer_7="enemy"
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0

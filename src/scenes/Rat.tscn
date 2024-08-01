@@ -34,6 +34,7 @@ func _process(delta: float) -> void:
 	set_process(false) 
 	await wait_five_secs_move()
 	set_process(true) 
+	delta = delta
 
 func _physics_process(delta):
 	var label = $Label
