@@ -1,0 +1,50 @@
+[gd_scene load_steps=2 format=3 uid="uid://bcccb21b37lk1"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_caqnt"]
+font_size = 106
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+modulate = Color(0.133333, 0, 0.337255, 0.411765)
+layout_mode = 0
+offset_right = 2176.0
+offset_bottom = 1344.0
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 128.0
+offset_right = 1936.0
+offset_bottom = 552.0
+
+[node name="TabBar" type="TabBar" parent="Panel"]
+self_modulate = Color(0.813079, 0.203176, 0.510348, 1)
+layout_mode = 0
+offset_left = 320.0
+offset_top = 232.0
+offset_right = 488.0
+offset_bottom = 272.0
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 88.0
+offset_right = 1403.0
+offset_bottom = 234.0
+text = "lolcito tres sesenta xD"
+label_settings = SubResource("LabelSettings_caqnt")
+
+[node name="Tree" type="Tree" parent="Panel"]
+layout_mode = 0
+offset_left = 376.0
+offset_top = 552.0
+offset_right = 1304.0
+offset_bottom = 1032.0
+columns = 3

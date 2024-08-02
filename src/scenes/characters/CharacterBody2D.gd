@@ -167,12 +167,11 @@ func on_ground(direction):
 	_animation_tree.set("parameters/attack_1/blend_position", last_movement)
 	_animation_tree.set("parameters/attack_2/blend_position", last_movement)
 	_animation_tree.set("parameters/attack_3/blend_position", last_movement)
-	print(_state_machine.get_current_node())
+
 	if !sliding: velocity.x = 0
 	
 	if is_playing_by_name("attack"):
 		var overlapping = $AnimatedSprite2D/Sword.get_overlapping_bodies()
-		#print(overlapping)
 		for body in overlapping:
 			if body.name == "Rat":
 				var health = body.get_tree().get_root().get_node("Game/Rat").get("health")
@@ -212,5 +211,4 @@ func on_ground(direction):
 			_state_machine.travel("run")
 
 func is_playing_by_name(animation_type):
-	#print (_state_machine.get_current_node())
 	return _state_machine.get_current_node().contains(animation_type)

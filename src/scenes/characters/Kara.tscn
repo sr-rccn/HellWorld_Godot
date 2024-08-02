@@ -1,4 +1,4 @@
-[gd_scene load_steps=176 format=3 uid="uid://cs2e0srrlt42w"]
+[gd_scene load_steps=177 format=3 uid="uid://cs2e0srrlt42w"]
 
 [ext_resource type="Script" path="res://src/scenes/characters/CharacterBody2D.gd" id="1_mykga"]
 [ext_resource type="Texture2D" uid="uid://dwo522vl7udxn" path="res://src/assets/image.png" id="2_iywd5"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://c6hvbrnwcemkb" path="res://adventurer-Sheet_reverse.png" id="4_sqydg"]
 [ext_resource type="Texture2D" uid="uid://cbojclt5rx3hb" path="res://src/assets/output-onlinepngtools.png" id="5_5muhr"]
 [ext_resource type="Texture2D" uid="uid://bwl7xp0c3a36o" path="res://src/assets/adventurer-v1.5-Sheet.png" id="5_kpp38"]
+[ext_resource type="Script" path="res://src/scenes/characters/Sword.gd" id="7_anw8v"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jt0ve"]
 atlas = ExtResource("2_iywd5")
@@ -3652,6 +3653,18 @@ tracks/13/keys = {
 "update": 0,
 "values": [Vector2(2.08165e-12, -0.4), Vector2(2.08165e-12, -0.4)]
 }
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("AnimatedSprite2D/Sword/CollisionShape2D:disabled")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, true]
+}
 
 [sub_resource type="Animation" id="Animation_ymure"]
 resource_name = "stand_right"
@@ -3811,6 +3824,18 @@ tracks/12/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(2.08165e-12, -0.4), Vector2(2.08165e-12, -0.4)]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("AnimatedSprite2D/Sword/CollisionShape2D:disabled")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, true]
 }
 
 [sub_resource type="Animation" id="Animation_7qkd5"]
@@ -4196,7 +4221,7 @@ script = ExtResource("1_mykga")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.725816, 0.725)
 sprite_frames = SubResource("SpriteFrames_rmxdm")
-animation = &"stand_right"
+animation = &"stand_left"
 frame = 2
 offset = Vector2(2.08165e-12, -5.49)
 
@@ -4209,12 +4234,13 @@ libraries = {
 [node name="Sword" type="Area2D" parent="AnimatedSprite2D" groups=["Hit"]]
 collision_layer = 8
 collision_mask = 71
+script = ExtResource("7_anw8v")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D/Sword" groups=["Hit"]]
-visible = false
 position = Vector2(-12.998, -8.111)
 rotation = 3.14159
 shape = SubResource("RectangleShape2D_viewq")
+disabled = true
 
 [node name="StandCollision" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_2vfnm")
@@ -4244,3 +4270,5 @@ parameters/jump/blend_position = 0.699827
 parameters/run/blend_position = 2.08165e-12
 parameters/stand_up/blend_position = 2.08165e-12
 parameters/wall_slide/blend_position = 2.08165e-12
+
+[connection signal="body_entered" from="AnimatedSprite2D/Sword" to="AnimatedSprite2D/Sword" method="_on_body_entered"]

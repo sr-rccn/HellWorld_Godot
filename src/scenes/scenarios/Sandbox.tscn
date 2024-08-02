@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cru7ynmjnlo28"]
+[gd_scene load_steps=12 format=3 uid="uid://cru7ynmjnlo28"]
 
 [ext_resource type="PackedScene" uid="uid://cmcrm87r0b5ty" path="res://src/scenes/enemies/Rat.tscn" id="1_bov8d"]
 [ext_resource type="PackedScene" uid="uid://c8r5a35ijvgo" path="res://src/scenes/objects/Jumper.tscn" id="2_21ncd"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://c2wxj4onmk2gx" path="res://src/scenes/objects/Dummy.tscn" id="5_y7r03"]
 [ext_resource type="Texture2D" uid="uid://clnsf5nyj4lc1" path="res://src/assets/oak_woods_tileset.png" id="6_vrnoi"]
 [ext_resource type="Texture2D" uid="uid://c25tq86bakhn8" path="res://src/assets/Background.png" id="7_jngka"]
+[ext_resource type="PackedScene" uid="uid://cjry61g0w64s7" path="res://src/scenes/ui/health_changed_manager.tscn" id="8_akyt8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qdh6w"]
 texture = ExtResource("6_vrnoi")
@@ -1482,6 +1483,8 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(1200, 40)
 shape = SubResource("RectangleShape2D_oyx5x")
+
+[node name="HealthChangedManager" parent="." instance=ExtResource("8_akyt8")]
 
 [connection signal="body_entered" from="Jumper6" to="Kara" method="_on_jumper_6_body_entered"]
 [connection signal="body_entered" from="Area2D" to="Kara" method="_on_area_2d_body_entered"]
