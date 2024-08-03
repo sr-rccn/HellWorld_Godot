@@ -173,10 +173,10 @@ func on_ground(direction):
 	if is_playing_by_name("attack"):
 		var overlapping = $AnimatedSprite2D/Sword.get_overlapping_bodies()
 		for body in overlapping:
-			if body.name == "Rat":
-				var health = body.get_tree().get_root().get_node("Game/Rat").get("health")
-				var damaged_health = int(health) - 1
-				body.get_tree().get_root().get_node("Game/Rat").set("health", damaged_health)
+			#if body.name == "Rat":
+				#var health = body.get_tree().get_root().get_node("Game/Rat").get("health")
+				#var damaged_health = int(health) - 1
+				#body.get_tree().get_root().get_node("Game/Rat").set("health", damaged_health)
 
 			if body.name.contains("Dummy"): 
 				body.queue_free()

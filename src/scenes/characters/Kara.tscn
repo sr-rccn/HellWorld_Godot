@@ -1,6 +1,6 @@
 [gd_scene load_steps=177 format=3 uid="uid://cs2e0srrlt42w"]
 
-[ext_resource type="Script" path="res://src/scenes/characters/CharacterBody2D.gd" id="1_mykga"]
+[ext_resource type="Script" path="res://src/scenes/characters/Kara.gd" id="1_mykga"]
 [ext_resource type="Texture2D" uid="uid://dwo522vl7udxn" path="res://src/assets/image.png" id="2_iywd5"]
 [ext_resource type="Texture2D" uid="uid://vk6ddfcfgrqw" path="res://src/assets/adventurer-Sheet.png" id="3_wil1e"]
 [ext_resource type="Texture2D" uid="uid://c6hvbrnwcemkb" path="res://adventurer-Sheet_reverse.png" id="4_sqydg"]
@@ -796,7 +796,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2vfnm"]
-size = Vector2(7.855, 20)
+size = Vector2(7.855, 12)
 
 [sub_resource type="Animation" id="Animation_gwl5g"]
 length = 0.001
@@ -4221,8 +4221,8 @@ script = ExtResource("1_mykga")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.725816, 0.725)
 sprite_frames = SubResource("SpriteFrames_rmxdm")
-animation = &"stand_left"
-frame = 2
+animation = &"floor_slide_right"
+frame = 3
 offset = Vector2(2.08165e-12, -5.49)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AnimatedSprite2D"]
@@ -4237,8 +4237,8 @@ collision_mask = 71
 script = ExtResource("7_anw8v")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D/Sword" groups=["Hit"]]
-position = Vector2(-12.998, -8.111)
-rotation = 3.14159
+position = Vector2(-6.12012, 7.86699)
+rotation = 1.5708
 shape = SubResource("RectangleShape2D_viewq")
 disabled = true
 
@@ -4247,11 +4247,10 @@ shape = SubResource("RectangleShape2D_2vfnm")
 
 [node name="SlidingCollision" type="CollisionShape2D" parent="."]
 visible = false
-position = Vector2(-4.17, 4.23)
+position = Vector2(3.99, 4.63)
 rotation = 1.5708
 scale = Vector2(0.5, 0.5)
 shape = SubResource("RectangleShape2D_ho6c6")
-disabled = true
 debug_color = Color(0.827033, 0.396372, 5.68864e-08, 0.42)
 
 [node name="AnimationTree" type="AnimationTree" parent="."]

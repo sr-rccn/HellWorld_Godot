@@ -8,7 +8,6 @@ extends Control
 func _ready():
 	SignalBus.connect("on_health_changed", on_signal_health_changed)
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
