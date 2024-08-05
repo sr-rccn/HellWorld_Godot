@@ -7,7 +7,7 @@ const JUMP_VELOCITY = -400.0
 @onready var state_machine = $AnimationTree.get("parameters/playback")
 @onready var state_machine2 = $AnimationTree.get("tree_root")
 
-@export var health = 50
+@export var health = 20
 @export var damage_cooldown = false
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -33,7 +33,6 @@ func _physics_process(delta):
 
 	if not is_on_floor():
 		velocity.y += gravity * delta
-	
 
 	velocity.x = (moving * SPEED)
 	
@@ -49,23 +48,20 @@ func _physics_process(delta):
 func animate(new_velocity):
 	if health <= 0:
 		state_machine.travel("death")
-		
-		if state_machine.get_current_node() != "death" and health <= 0:
+		if state_machine.get_current_node() == "End":
 			queue_free()
-			
-		return #
-		
-	if velocity.x == 0:
-		state_machine.travel("idle")
-		animation_tree.set("parameters/idle/blend_position", last_movement)
-		animation_tree.set("parameters/conditions/is_running", false)
-		animation_tree.set("parameters/conditions/idle", true)
-
 	else:
-		state_machine.travel("run")
-		animation_tree.set("parameters/run/blend_position", new_velocity.x)
-		animation_tree.set("parameters/conditions/is_running", true)
-		animation_tree.set("parameters/conditions/idle", false)
+		if velocity.x == 0:
+			state_machine.travel("idle")
+			animation_tree.set("parameters/idle/blend_position", last_movement)
+			animation_tree.set("parameters/conditions/is_running", false)
+			animation_tree.set("parameters/conditions/idle", true)
+
+		else:
+			state_machine.travel("run")
+			animation_tree.set("parameters/run/blend_position", new_velocity.x)
+			animation_tree.set("parameters/conditions/is_running", true)
+			animation_tree.set("parameters/conditions/idle", false)
 
 func wait_one_secs_move():
 	await get_tree().create_timer(1).timeout
