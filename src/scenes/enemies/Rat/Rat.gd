@@ -7,7 +7,7 @@ const JUMP_VELOCITY = -400.0
 @onready var state_machine = $AnimationTree.get("parameters/playback")
 @onready var state_machine2 = $AnimationTree.get("tree_root")
 
-@export var health = 300
+@export var health = 50
 @export var damage_cooldown = false
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -39,14 +39,22 @@ func _physics_process(delta):
 	
 	label.text = str(health)
 
-	if health == 0:	
-		queue_free()
+	#if health <= 0:	
+		#state_machine.travel("death")
 		
 	animate(velocity)
 	move_and_slide()
 
 
 func animate(new_velocity):
+	if health <= 0:
+		state_machine.travel("death")
+		
+		if state_machine.get_current_node() != "death" and health <= 0:
+			queue_free()
+			
+		return #
+		
 	if velocity.x == 0:
 		state_machine.travel("idle")
 		animation_tree.set("parameters/idle/blend_position", last_movement)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://cmcrm87r0b5ty"]
+[gd_scene load_steps=62 format=3 uid="uid://cmcrm87r0b5ty"]
 
 [ext_resource type="Script" path="res://src/scenes/enemies/Rat/Rat.gd" id="1_5ogo6"]
 [ext_resource type="Texture2D" uid="uid://fi3448hb51em" path="res://src/assets/Rat/NoneOutlinedRat/rat-idle.png" id="1_njqlu"]
@@ -226,6 +226,30 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimatedSprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AnimatedSprite2D:flip_h")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_13ks6"]
@@ -628,11 +652,117 @@ tracks/4/keys = {
 "values": [Vector2(2.08165e-12, -1.5), Vector2(2.08165e-12, -1.5)]
 }
 
+[sub_resource type="Animation" id="Animation_7obme"]
+resource_name = "death_right"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"death"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimatedSprite2D:flip_h")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AnimatedSprite2D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_orc7i"]
+resource_name = "death_left"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"death"]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimatedSprite2D:flip_h")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AnimatedSprite2D:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_jasf8"]
 _data = {
 "RESET": SubResource("Animation_23g1f"),
 "attack_left": SubResource("Animation_13ks6"),
 "attack_right": SubResource("Animation_otmsn"),
+"death_left": SubResource("Animation_orc7i"),
+"death_right": SubResource("Animation_7obme"),
 "idle_left": SubResource("Animation_utvpo"),
 "idle_right": SubResource("Animation_duxq1"),
 "run_left": SubResource("Animation_8lrev"),
@@ -649,6 +779,19 @@ animation = &"attack_right"
 blend_point_0/node = SubResource("AnimationNodeAnimation_hdpgg")
 blend_point_0/pos = -1.0
 blend_point_1/node = SubResource("AnimationNodeAnimation_rynfx")
+blend_point_1/pos = 1.0
+blend_mode = 1
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_x4ldq"]
+animation = &"death_left"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ip5eu"]
+animation = &"death_right"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_8gx2d"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_x4ldq")
+blend_point_0/pos = -1.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_ip5eu")
 blend_point_1/pos = 1.0
 blend_mode = 1
 
@@ -702,12 +845,14 @@ states/End/position = Vector2(673, 71.9688)
 states/Start/position = Vector2(128.5, 64.7969)
 states/attack/node = SubResource("AnimationNodeBlendSpace1D_cavrx")
 states/attack/position = Vector2(496, 71.586)
+states/death/node = SubResource("AnimationNodeBlendSpace1D_8gx2d")
+states/death/position = Vector2(478.192, 171.821)
 states/idle/node = SubResource("AnimationNodeBlendSpace1D_4t052")
 states/idle/position = Vector2(314.25, 66.1562)
 states/run/node = SubResource("AnimationNodeBlendSpace1D_srmuw")
 states/run/position = Vector2(312.969, 201.047)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_sliyh"), "idle", "attack", SubResource("AnimationNodeStateMachineTransition_033q1"), "attack", "idle", SubResource("AnimationNodeStateMachineTransition_3x4v4"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_5qy5n"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_gqiw8")]
-graph_offset = Vector2(8.5546, -1.28427)
+graph_offset = Vector2(-4.3079, 40.8207)
 
 [sub_resource type="LabelSettings" id="LabelSettings_lcqen"]
 font_size = 8
@@ -722,8 +867,7 @@ script = ExtResource("1_5ogo6")
 position = Vector2(2.08165e-12, -9.5)
 scale = Vector2(1, 0.9)
 sprite_frames = SubResource("SpriteFrames_48uti")
-animation = &"idle"
-frame = 2
+animation = &"death"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_gnf1s")
@@ -740,6 +884,7 @@ parameters/conditions/attack = false
 parameters/conditions/idle = false
 parameters/conditions/is_running = false
 parameters/attack/blend_position = 2.08165e-12
+parameters/death/blend_position = -0.60552
 parameters/idle/blend_position = 2.08165e-12
 parameters/run/blend_position = 2.08165e-12
 
