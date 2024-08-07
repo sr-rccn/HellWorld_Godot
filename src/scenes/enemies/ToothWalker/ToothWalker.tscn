@@ -1,8 +1,9 @@
-[gd_scene load_steps=55 format=3 uid="uid://bcuqxlyptjtd6"]
+[gd_scene load_steps=60 format=3 uid="uid://bcuqxlyptjtd6"]
 
 [ext_resource type="Texture2D" uid="uid://dxf11tcaopjg5" path="res://src/assets/tooth walker/tooth walker sprite-Sheet.png" id="1_kakqu"]
 [ext_resource type="Script" path="res://src/scenes/enemies/ToothWalker/ToothWalker.gd" id="1_ul4ad"]
 [ext_resource type="Script" path="res://src/scenes/enemies/Damageable.gd" id="3_xxi83"]
+[ext_resource type="Script" path="res://src/scenes/enemies/ToothWalker/Area2D.gd" id="4_ucx2h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xm3tk"]
 size = Vector2(10, 34)
@@ -264,6 +265,7 @@ tracks/4/keys = {
 [sub_resource type="Animation" id="Animation_qld85"]
 resource_name = "attack_left"
 length = 0.5
+loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -307,15 +309,16 @@ tracks/3/path = NodePath("AnimatedSprite2D:frame")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.45),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [0, 1, 2, 3, 5]
+"values": [0, 1, 2, 3, 4, 5]
 }
 
 [sub_resource type="Animation" id="Animation_5fnya"]
 resource_name = "attack_right"
 length = 0.5
+loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -359,10 +362,10 @@ tracks/3/path = NodePath("AnimatedSprite2D:frame")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.45),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [0, 1, 2, 3, 5]
+"values": [0, 1, 2, 3, 4, 5]
 }
 
 [sub_resource type="Animation" id="Animation_sy7fa"]
@@ -750,22 +753,36 @@ blend_mode = 1
 switch_mode = 2
 advance_mode = 2
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7tqe6"]
+advance_mode = 0
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_guohk"]
+advance_mode = 0
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1d55k"]
+switch_mode = 2
+advance_mode = 0
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_oggjr"]
 states/End/position = Vector2(557.5, 174.5)
-states/Start/position = Vector2(63.5, 106.5)
+states/Start/position = Vector2(63, 74)
 states/attack/node = SubResource("AnimationNodeBlendSpace1D_f7hid")
-states/attack/position = Vector2(228.25, 173.5)
+states/attack/position = Vector2(221.25, 200.5)
 states/death/node = SubResource("AnimationNodeBlendSpace1D_d1hmn")
 states/death/position = Vector2(386.5, 174)
 states/idle/node = SubResource("AnimationNodeBlendSpace1D_gxr3b")
-states/idle/position = Vector2(227.5, 62.5)
+states/idle/position = Vector2(227.875, 64.25)
 states/walk/node = SubResource("AnimationNodeBlendSpace1D_0ncgd")
 states/walk/position = Vector2(394, 64)
-transitions = ["death", "End", SubResource("AnimationNodeStateMachineTransition_48hoi")]
+transitions = ["death", "End", SubResource("AnimationNodeStateMachineTransition_48hoi"), "idle", "attack", SubResource("AnimationNodeStateMachineTransition_7tqe6"), "idle", "walk", SubResource("AnimationNodeStateMachineTransition_guohk"), "attack", "idle", SubResource("AnimationNodeStateMachineTransition_1d55k")]
+graph_offset = Vector2(-142.388, 23.5875)
 
 [sub_resource type="LabelSettings" id="LabelSettings_fq7vg"]
 font_size = 8
 shadow_size = 0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5nasr"]
+size = Vector2(48, 40)
 
 [node name="ToothWalker" type="CharacterBody2D"]
 script = ExtResource("1_ul4ad")
@@ -775,17 +792,18 @@ shape = SubResource("RectangleShape2D_xm3tk")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_c6rsa")
-animation = &"attack"
-frame = 1
-offset = Vector2(-4.5, -8.83)
+animation = &"walk"
+frame = 3
+offset = Vector2(-4.58, -4.75)
+flip_h = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+active = false
 libraries = {
 "": SubResource("AnimationLibrary_gbe7j")
 }
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-deterministic = false
 tree_root = SubResource("AnimationNodeStateMachine_oggjr")
 anim_player = NodePath("../AnimationPlayer")
 parameters/attack/blend_position = 0.523864
@@ -805,3 +823,16 @@ label_settings = SubResource("LabelSettings_fq7vg")
 horizontal_alignment = 1
 justification_flags = 128
 uppercase = true
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 64
+collision_mask = 2
+script = ExtResource("4_ucx2h")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -4)
+shape = SubResource("RectangleShape2D_5nasr")
+debug_color = Color(0.909804, 0.298039, 0.0666667, 0.215686)
+
+[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
+[connection signal="body_exited" from="Area2D" to="Area2D" method="_on_body_exited"]

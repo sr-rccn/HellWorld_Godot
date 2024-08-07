@@ -2,19 +2,12 @@ extends Node
 
 class_name Damageable
 
-#@export var health : float = 0:
-	#get:
-		#return get_parent().get("health")
-	#set(value):
-		#SignalBus.emit_signal("on_health_changed", get_parent(), value - health)
-		#get_parent().set("health", health)
-		#health = value
-
 func _ready():
 	print(get_parent().get("health"))
 
 func hit(damage : int):
 	var state_machine = $"../AnimationTree".get("parameters/playback")
+	state_machine.travel("attack")
 	print(state_machine.get_current_node())
 	
 	var health = get_parent().get("health")
