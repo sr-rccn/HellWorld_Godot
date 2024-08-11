@@ -125,6 +125,7 @@ func on_air():
 	if is_playing_by_name("sit"): return #
 	if is_on_wall():
 		_state_machine.travel("wall_slide")
+		velocity.y = (velocity.y * 0.30)
 		return #
 	
 	#if !is_on_floor() and !jumping:
@@ -140,7 +141,10 @@ func on_air():
 					
 			await get_tree().create_timer(sliding_cool_down).timeout
 			sliding = false	
-		_state_machine.travel("jump")
+		if !is_playing_by_name("attack_air"): 
+			_state_machine.travel("jump")
+		else:
+			velocity.y = 0
 
 
 func attack(direction):
@@ -151,7 +155,11 @@ func attack(direction):
 			var animation_name = "attack_" + str(attacks)
 			_state_machine.travel(animation_name)
 			if attacks == 3: attacks = 0
-
+		if direction == 0 and !is_on_floor():
+			attacks = attacks + 1
+			var animation_name = "attack_air_" + str(attacks)
+			_state_machine.travel(animation_name)
+			if attacks == 3: attacks = 0
 
 func on_ground(direction):
 	_animation_tree.set("parameters/idle/blend_position", last_movement)
