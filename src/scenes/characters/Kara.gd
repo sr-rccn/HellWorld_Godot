@@ -24,7 +24,7 @@ func _physics_process(delta):
 
 	add_gravity(delta)
 	move_character(direction)
-	on_air()
+	on_air(delta)
 	on_ground(direction)
 	handle_jump()
 	handle_down()
@@ -120,14 +120,22 @@ func _on_area_2d_body_entered(body):
 	if body is CharacterBody2D:
 		body.get_tree().call_deferred("reload_current_scene")
 
-func on_air():
+func on_air(delta):
 	_animation_tree.set("parameters/jump/blend_position", last_movement)
+	_animation_tree.set("parameters/attack_air_1/blend_position", last_movement)
+	_animation_tree.set("parameters/attack_air_2/blend_position", last_movement)
+	_animation_tree.set("parameters/attack_air_3/blend_position", last_movement)
+	_animation_tree.set("parameters/attack_air_land/blend_position", last_movement)
+	
+	print(_state_machine.get_current_node())
+	if is_playing_by_name("attack_air_3"): velocity.y = (gravity * delta) * 40
+	
 	if is_playing_by_name("sit"): return #
 	if is_on_wall():
 		_state_machine.travel("wall_slide")
-		velocity.y = (velocity.y * 0.30)
+		velocity.y = velocity.y * 0.75
 		return #
-	
+	print(velocity.y)
 	#if !is_on_floor() and !jumping:
 		#_state_machine.travel("")
 		#animate_air(last_movement)
@@ -144,7 +152,7 @@ func on_air():
 		if !is_playing_by_name("attack_air"): 
 			_state_machine.travel("jump")
 		else:
-			velocity.y = 0
+			if !is_playing_by_name("attack_air_3"): velocity.y = 0
 
 
 func attack(direction):
@@ -175,8 +183,11 @@ func on_ground(direction):
 	_animation_tree.set("parameters/attack_1/blend_position", last_movement)
 	_animation_tree.set("parameters/attack_2/blend_position", last_movement)
 	_animation_tree.set("parameters/attack_3/blend_position", last_movement)
-
+	_animation_tree.set("parameters/attack_air_land/blend_position", last_movement)
 	if !sliding: velocity.x = 0
+	
+	if is_playing_by_name("attack_air_3") and is_on_floor():
+		_state_machine.travel("attack_air_land")
 	
 	if is_playing_by_name("attack"):
 		var overlapping = $AnimatedSprite2D/Sword.get_overlapping_bodies()
