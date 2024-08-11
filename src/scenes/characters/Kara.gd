@@ -75,6 +75,7 @@ func handle_jump():	# Handle jump.
 func handle_down():	# Handle jump.
 	var button_down_pressed = Input.is_action_pressed("ui_down", true)
 	var button_jump_just_pressed = Input.is_action_just_pressed("ui_accept", true)
+	var button_attack_just_pressed = Input.is_action_just_pressed("ui_attack", true)
 	
 	if button_down_pressed and button_jump_just_pressed:
 		sliding = true
@@ -127,7 +128,6 @@ func on_air(delta):
 	_animation_tree.set("parameters/attack_air_3/blend_position", last_movement)
 	_animation_tree.set("parameters/attack_air_land/blend_position", last_movement)
 	
-	print(_state_machine.get_current_node())
 	if is_playing_by_name("attack_air_3"): velocity.y = (gravity * delta) * 40
 	
 	if is_playing_by_name("sit"): return #
@@ -135,7 +135,7 @@ func on_air(delta):
 		_state_machine.travel("wall_slide")
 		velocity.y = velocity.y * 0.75
 		return #
-	print(velocity.y)
+
 	#if !is_on_floor() and !jumping:
 		#_state_machine.travel("")
 		#animate_air(last_movement)
@@ -156,8 +156,11 @@ func on_air(delta):
 
 
 func attack(direction):
+	var button_down_pressed = Input.is_action_pressed("ui_down", true)
 	if Input.is_action_just_pressed("ui_attack"):
-	#Mover y saltar a la derecha	
+		
+
+		
 		if direction == 0 and is_on_floor():
 			attacks = attacks + 1
 			var animation_name = "attack_" + str(attacks)
@@ -165,9 +168,11 @@ func attack(direction):
 			if attacks == 3: attacks = 0
 		if direction == 0 and !is_on_floor():
 			attacks = attacks + 1
-			var animation_name = "attack_air_" + str(attacks)
-			_state_machine.travel(animation_name)
-			if attacks == 3: attacks = 0
+			if button_down_pressed: _state_machine.travel("attack_air_3")
+			else:
+				var animation_name = "attack_air_" + str(attacks)
+				_state_machine.travel(animation_name)
+				if attacks == 3: attacks = 0
 
 func on_ground(direction):
 	_animation_tree.set("parameters/idle/blend_position", last_movement)

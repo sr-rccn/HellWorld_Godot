@@ -4903,7 +4903,8 @@ script = ExtResource("1_mykga")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.725816, 0.725)
 sprite_frames = SubResource("SpriteFrames_rmxdm")
-animation = &"stand_left"
+animation = &"stand_right"
+frame = 2
 offset = Vector2(2.08165e-12, -5.49)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AnimatedSprite2D"]
