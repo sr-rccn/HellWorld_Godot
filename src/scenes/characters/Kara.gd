@@ -159,8 +159,6 @@ func attack(direction):
 	var button_down_pressed = Input.is_action_pressed("ui_down", true)
 	if Input.is_action_just_pressed("ui_attack"):
 		
-
-		
 		if direction == 0 and is_on_floor():
 			attacks = attacks + 1
 			var animation_name = "attack_" + str(attacks)

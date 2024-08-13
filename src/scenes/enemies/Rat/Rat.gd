@@ -12,7 +12,7 @@ const JUMP_VELOCITY = -400.0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
-var attack = false
+var attacking = false
 var patrol_count = 0
 
 var moving = -1
@@ -43,7 +43,9 @@ func _physics_process(delta):
 		
 	animate(velocity)
 	move_and_slide()
-
+	if attacking:
+		state_machine.travel("attack")
+		animation_tree.set("parameters/attack/blend_position", last_movement)
 
 func animate(new_velocity):
 	if health <= 0:
