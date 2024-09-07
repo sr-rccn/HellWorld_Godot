@@ -15,8 +15,8 @@ func _process(delta):
 func _on_body_entered(body):
 	print(body)
 	print(body.name.contains("Kara"))
-	if body.name.contains("Kara"):
-		get_tree().change_scene_to_file("res://src/scenes/scenarios/Level2.tscn")
+	#if body.name.contains("Kara"):
+		#get_tree().change_scene_to_file("res://src/scenes/scenarios/Level2.tscn")
 		#get_tree().root.add_child(simultaneous_scene)
 
 

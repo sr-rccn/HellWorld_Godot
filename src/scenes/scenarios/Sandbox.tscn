@@ -1499,7 +1499,7 @@ collision_mask = 3
 script = ExtResource("10_6fsft")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EndLevel"]
-position = Vector2(-104, 184)
+position = Vector2(1248, -56)
 shape = SubResource("RectangleShape2D_2rm0g")
 debug_color = Color(0.577088, 0.385001, 1, 0.42)
 

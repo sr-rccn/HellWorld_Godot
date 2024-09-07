@@ -3,6 +3,7 @@ extends CharacterBody2D
 
 @onready var _animation_tree = $AnimationTree
 @onready var _state_machine = $AnimationTree.get("parameters/playback")
+@export var health = 50
 
 const SPEED = 150.0
 const JUMP_VELOCITY = -200.0
@@ -20,6 +21,9 @@ var gravity = 800
 
 
 func _physics_process(delta):
+	var label = $Label
+	label.text = str(health)
+
 	var direction = Input.get_axis("ui_left", "ui_right")
 
 	add_gravity(delta)

@@ -1,9 +1,10 @@
-[gd_scene load_steps=60 format=3 uid="uid://bcuqxlyptjtd6"]
+[gd_scene load_steps=62 format=3 uid="uid://bcuqxlyptjtd6"]
 
 [ext_resource type="Texture2D" uid="uid://dxf11tcaopjg5" path="res://src/assets/tooth walker/tooth walker sprite-Sheet.png" id="1_kakqu"]
 [ext_resource type="Script" path="res://src/scenes/enemies/ToothWalker/ToothWalker.gd" id="1_ul4ad"]
 [ext_resource type="Script" path="res://src/scenes/enemies/Damageable.gd" id="3_xxi83"]
 [ext_resource type="Script" path="res://src/scenes/enemies/ToothWalker/Area2D.gd" id="4_ucx2h"]
+[ext_resource type="Script" path="res://src/scenes/enemies/ToothWalker/Bite.gd" id="5_l3r5q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xm3tk"]
 size = Vector2(10, 34)
@@ -784,6 +785,9 @@ shadow_size = 0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5nasr"]
 size = Vector2(48, 40)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m07ps"]
+size = Vector2(50, 26)
+
 [node name="ToothWalker" type="CharacterBody2D"]
 script = ExtResource("1_ul4ad")
 
@@ -792,10 +796,9 @@ shape = SubResource("RectangleShape2D_xm3tk")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_c6rsa")
-animation = &"walk"
-frame = 3
-offset = Vector2(-4.58, -4.75)
-flip_h = true
+animation = &"attack"
+frame = 4
+offset = Vector2(-4.68, -7.9)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 active = false
@@ -834,5 +837,13 @@ position = Vector2(0, -4)
 shape = SubResource("RectangleShape2D_5nasr")
 debug_color = Color(0.909804, 0.298039, 0.0666667, 0.215686)
 
+[node name="Bite" type="Area2D" parent="."]
+script = ExtResource("5_l3r5q")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bite"]
+position = Vector2(-1, -3)
+shape = SubResource("RectangleShape2D_m07ps")
+
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
 [connection signal="body_exited" from="Area2D" to="Area2D" method="_on_body_exited"]
+[connection signal="body_entered" from="Bite" to="Bite" method="_on_body_entered"]
