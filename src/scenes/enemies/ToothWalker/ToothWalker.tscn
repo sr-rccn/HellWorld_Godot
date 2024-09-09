@@ -838,6 +838,8 @@ shape = SubResource("RectangleShape2D_5nasr")
 debug_color = Color(0.909804, 0.298039, 0.0666667, 0.215686)
 
 [node name="Bite" type="Area2D" parent="."]
+collision_layer = 64
+collision_mask = 2
 script = ExtResource("5_l3r5q")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Bite"]

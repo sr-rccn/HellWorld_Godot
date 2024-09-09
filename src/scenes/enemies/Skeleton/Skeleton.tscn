@@ -1,0 +1,178 @@
+[gd_scene load_steps=17 format=3 uid="uid://w32ecn1muxdr"]
+
+[ext_resource type="Script" path="res://src/scenes/enemies/Skeleton/Skeleton.gd" id="1_2m878"]
+[ext_resource type="Texture2D" uid="uid://b7bjjvtyw0jpm" path="res://src/assets/Skeleton/skeleton.png" id="2_f884y"]
+[ext_resource type="Script" path="res://src/scenes/enemies/Damageable.gd" id="3_33xnb"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ysdv3"]
+atlas = ExtResource("2_f884y")
+region = Rect2(13, 3, 20, 33)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2xnid"]
+atlas = ExtResource("2_f884y")
+region = Rect2(13, 38, 20, 33)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_n1c4i"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ysdv3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2xnid")
+}],
+"loop": true,
+"name": &"run",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g0s00"]
+size = Vector2(18, 29)
+
+[sub_resource type="Animation" id="Animation_oav5o"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_h1f7o"]
+resource_name = "run_left"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 0, 1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, true]
+}
+
+[sub_resource type="Animation" id="Animation_w68qv"]
+resource_name = "run_right"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 0, 1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ovj5e"]
+_data = {
+"RESET": SubResource("Animation_oav5o"),
+"run_left": SubResource("Animation_h1f7o"),
+"run_right": SubResource("Animation_w68qv")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gh46f"]
+animation = &"run_left"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_b7djq"]
+animation = &"run_right"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_rufxx"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_gh46f")
+blend_point_0/pos = -1.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_b7djq")
+blend_point_1/pos = 1.0
+blend_mode = 1
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_5vvhv"]
+states/run/node = SubResource("AnimationNodeBlendSpace1D_rufxx")
+states/run/position = Vector2(356.5, 96.5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_rliuc"]
+font_size = 8
+shadow_size = 0
+
+[node name="Skeleton" type="CharacterBody2D"]
+script = ExtResource("1_2m878")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_n1c4i")
+animation = &"run"
+frame = 1
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1.5)
+shape = SubResource("RectangleShape2D_g0s00")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ovj5e")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_5vvhv")
+anim_player = NodePath("../AnimationPlayer")
+parameters/run/blend_position = -0.977327
+
+[node name="Label" type="Label" parent="."]
+offset_left = -16.0
+offset_top = -24.0
+offset_right = 8.0
+offset_bottom = -12.0
+label_settings = SubResource("LabelSettings_rliuc")
+justification_flags = 128
+uppercase = true
+
+[node name="Damageable" type="Node" parent="."]
+script = ExtResource("3_33xnb")

@@ -1,6 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://cru7ynmjnlo28"]
+[gd_scene load_steps=16 format=3 uid="uid://cru7ynmjnlo28"]
 
 [ext_resource type="PackedScene" uid="uid://cmcrm87r0b5ty" path="res://src/scenes/enemies/Rat/Rat.tscn" id="1_bov8d"]
+[ext_resource type="PackedScene" uid="uid://w32ecn1muxdr" path="res://src/scenes/enemies/Skeleton/Skeleton.tscn" id="1_fhuh2"]
 [ext_resource type="PackedScene" uid="uid://c8r5a35ijvgo" path="res://src/scenes/objects/Jumper.tscn" id="2_21ncd"]
 [ext_resource type="PackedScene" uid="uid://cw0gxr5k7kvar" path="res://src/scenes/objects/Box.tscn" id="3_gcywf"]
 [ext_resource type="PackedScene" uid="uid://cs2e0srrlt42w" path="res://src/scenes/characters/Kara.tscn" id="4_0q4ps"]
@@ -1409,6 +1410,9 @@ size = Vector2(50, 58)
 [node name="Game" type="Node2D"]
 position = Vector2(-32, -56)
 
+[node name="Skeleton" parent="." instance=ExtResource("1_fhuh2")]
+position = Vector2(-216, 192)
+
 [node name="Rat" parent="." instance=ExtResource("1_bov8d")]
 position = Vector2(-104, -16)
 
@@ -1451,7 +1455,7 @@ position = Vector2(-320, 56)
 collision_mask = 5
 
 [node name="ToothWalker" parent="." instance=ExtResource("6_ta2di")]
-position = Vector2(-232, 176)
+position = Vector2(-432, 48)
 
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2(-73, 16)
