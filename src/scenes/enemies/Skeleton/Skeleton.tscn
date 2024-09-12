@@ -1,29 +1,57 @@
-[gd_scene load_steps=17 format=3 uid="uid://w32ecn1muxdr"]
+[gd_scene load_steps=21 format=3 uid="uid://w32ecn1muxdr"]
 
 [ext_resource type="Script" path="res://src/scenes/enemies/Skeleton/Skeleton.gd" id="1_2m878"]
-[ext_resource type="Texture2D" uid="uid://b7bjjvtyw0jpm" path="res://src/assets/Skeleton/skeleton.png" id="2_f884y"]
+[ext_resource type="Texture2D" uid="uid://dhdj0jk3p8les" path="res://src/assets/Skeleton/run.png" id="2_hilco"]
 [ext_resource type="Script" path="res://src/scenes/enemies/Damageable.gd" id="3_33xnb"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ysdv3"]
-atlas = ExtResource("2_f884y")
-region = Rect2(13, 3, 20, 33)
+[sub_resource type="AtlasTexture" id="AtlasTexture_racvh"]
+atlas = ExtResource("2_hilco")
+region = Rect2(0, 0, 23, 28)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_2xnid"]
-atlas = ExtResource("2_f884y")
-region = Rect2(13, 38, 20, 33)
+[sub_resource type="AtlasTexture" id="AtlasTexture_cjih7"]
+atlas = ExtResource("2_hilco")
+region = Rect2(23, 0, 23, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ch7kc"]
+atlas = ExtResource("2_hilco")
+region = Rect2(46, 0, 23, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bcamq"]
+atlas = ExtResource("2_hilco")
+region = Rect2(0, 28, 23, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4kbc0"]
+atlas = ExtResource("2_hilco")
+region = Rect2(23, 28, 23, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6lswb"]
+atlas = ExtResource("2_hilco")
+region = Rect2(46, 28, 23, 28)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_n1c4i"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ysdv3")
+"texture": SubResource("AtlasTexture_racvh")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_2xnid")
+"texture": SubResource("AtlasTexture_cjih7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ch7kc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bcamq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4kbc0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6lswb")
 }],
 "loop": true,
 "name": &"run",
-"speed": 5.0
+"speed": 7.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g0s00"]
@@ -63,26 +91,26 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/path = NodePath("AnimatedSprite2D:flip_h")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.3, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 0, 1]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatedSprite2D:flip_h")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.6),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [true, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
 }
 
 [sub_resource type="Animation" id="Animation_w68qv"]
@@ -92,26 +120,26 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:frame")
+tracks/0/path = NodePath("AnimatedSprite2D:flip_h")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.3, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 0, 1]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatedSprite2D:flip_h")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.6),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ovj5e"]
