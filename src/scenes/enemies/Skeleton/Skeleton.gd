@@ -48,9 +48,17 @@ func animate(new_velocity):
 	if health <= 0:
 		queue_free()
 	else:
-		animation_tree.set("parameters/run/blend_position", new_velocity.x)
-	state_machine.travel("run")
+		if velocity.x == 0:
+			state_machine.travel("idle")
+			animation_tree.set("parameters/idle/blend_position", last_movement)
+			animation_tree.set("parameters/conditions/is_running", false)
+			animation_tree.set("parameters/conditions/idle", true)
 
+		else:
+			state_machine.travel("run")
+			animation_tree.set("parameters/run/blend_position", new_velocity.x)
+			animation_tree.set("parameters/conditions/is_running", true)
+			animation_tree.set("parameters/conditions/idle", false)
 
 func wait_one_secs_move():
 	await get_tree().create_timer(1).timeout

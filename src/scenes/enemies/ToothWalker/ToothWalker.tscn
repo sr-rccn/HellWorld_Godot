@@ -796,9 +796,8 @@ shape = SubResource("RectangleShape2D_xm3tk")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_c6rsa")
-animation = &"attack"
-frame = 4
-offset = Vector2(-4.68, -7.9)
+animation = &"walk"
+offset = Vector2(-4.58, -4.75)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 active = false
