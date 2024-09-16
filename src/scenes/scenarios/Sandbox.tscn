@@ -7,8 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://cs2e0srrlt42w" path="res://src/scenes/characters/Kara.tscn" id="4_0q4ps"]
 [ext_resource type="PackedScene" uid="uid://c2wxj4onmk2gx" path="res://src/scenes/objects/Dummy.tscn" id="5_y7r03"]
 [ext_resource type="PackedScene" uid="uid://bcuqxlyptjtd6" path="res://src/scenes/enemies/ToothWalker/ToothWalker.tscn" id="6_ta2di"]
-[ext_resource type="Texture2D" uid="uid://clnsf5nyj4lc1" path="res://src/assets/oak_woods_tileset.png" id="6_vrnoi"]
-[ext_resource type="Texture2D" uid="uid://c25tq86bakhn8" path="res://src/assets/Background.png" id="7_jngka"]
+[ext_resource type="Texture2D" uid="uid://clnsf5nyj4lc1" path="res://src/assets/Tiles/oak_woods_tileset.png" id="6_vrnoi"]
+[ext_resource type="Texture2D" uid="uid://c25tq86bakhn8" path="res://src/assets/Backgrounds/Background.png" id="7_jngka"]
 [ext_resource type="PackedScene" uid="uid://cjry61g0w64s7" path="res://src/scenes/ui/health_changed_manager.tscn" id="8_akyt8"]
 [ext_resource type="Script" path="res://src/scenes/scenarios/EndLevel.gd" id="10_6fsft"]
 

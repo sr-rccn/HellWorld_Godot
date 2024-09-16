@@ -1,9 +1,9 @@
 [gd_scene load_steps=4 format=3 uid="uid://d24kdofqotpi"]
 
-[ext_resource type="Texture2D" uid="uid://clnsf5nyj4lc1" path="res://src/assets/oak_woods_tileset.png" id="1_5a78x"]
+[ext_resource type="Texture2D" uid="uid://clnsf5nyj4lc1" path="res://src/assets/Tiles/oak_woods_tileset.png" id="1_soafw"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_j17bo"]
-texture = ExtResource("1_5a78x")
+texture = ExtResource("1_soafw")
 0:0/0 = 0
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:0/0/physics_layer_0/angular_velocity = 0.0

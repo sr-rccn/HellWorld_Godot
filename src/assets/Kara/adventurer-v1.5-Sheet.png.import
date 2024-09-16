@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://clnsf5nyj4lc1"
-path="res://.godot/imported/oak_woods_tileset.png-1582b8cb3390ac98f34c9a80383ef5bb.ctex"
+uid="uid://bwl7xp0c3a36o"
+path="res://.godot/imported/adventurer-v1.5-Sheet.png-eb1c740d2d8c8582a5ae1b13d3b07bd2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/assets/oak_woods_tileset.png"
-dest_files=["res://.godot/imported/oak_woods_tileset.png-1582b8cb3390ac98f34c9a80383ef5bb.ctex"]
+source_file="res://src/assets/Kara/adventurer-v1.5-Sheet.png"
+dest_files=["res://.godot/imported/adventurer-v1.5-Sheet.png-eb1c740d2d8c8582a5ae1b13d3b07bd2.ctex"]
 
 [params]
 

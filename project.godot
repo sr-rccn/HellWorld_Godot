@@ -13,7 +13,7 @@ config_version=5
 config/name="HellWorld"
 run/main_scene="res://src/scenes/scenarios/Sandbox.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
-config/icon="res://src/assets/icon.svg"
+config/icon="res://src/assets/Items/icon.svg"
 
 [autoload]
 
